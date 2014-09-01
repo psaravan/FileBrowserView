@@ -16,11 +16,15 @@
 package com.psaravan.filebrowserview.lib.View;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
 import com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView;
 import com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView;
+
+import java.io.IOException;
 
 /**
  * Base View class for the library.
@@ -36,6 +40,15 @@ public class FileBrowserView extends View {
     private int mFileBrowserLayoutType = FILE_BROWSER_LIST_LAYOUT;
     private View mFileBrowserLayout;
 
+    //File browser engine.
+    private FileBrowserEngine mFileBrowserEngine;
+
+    //Default directory to display.
+    private String mDefaultDir;
+
+    //Flag to show/hide hidden files.
+    private boolean mShowHiddenFiles = false;
+
     //Layout type constants.
     public static final int FILE_BROWSER_LIST_LAYOUT = 0;
     public static final int FILE_BROWSER_GRID_LAYOUT = 1;
@@ -43,33 +56,71 @@ public class FileBrowserView extends View {
     public FileBrowserView(Context context) {
         super(context);
         mContext = context;
-        init();
+
+        try {
+            mDefaultDir = Environment.getExternalStorageDirectory().getCanonicalPath().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mDefaultDir = "/";
+        }
+
     }
 
     public FileBrowserView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mContext = context;
-        init();
+
+        try {
+            mDefaultDir = Environment.getExternalStorageDirectory().getCanonicalPath().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mDefaultDir = "/";
+        }
+
     }
 
     public FileBrowserView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
-        init();
+
+        try {
+            mDefaultDir = Environment.getExternalStorageDirectory().getCanonicalPath().toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            mDefaultDir = "/";
+        }
+
     }
 
     /**
-     * Initialize the file browser view and set it up for use.
+     * Initializes the file browser view and fires it up for first use. Must be called to
+     * properly display the file browser.
      */
-    private void init() {
+    public void init() {
+
+        //Initialize the file browser engine for this view instance.
+        mFileBrowserEngine = new FileBrowserEngine(mContext, this);
+
         //Inflate the view's layout based on the selected layout.
         if (getFileBrowserLayoutType()==FILE_BROWSER_LIST_LAYOUT)
-            mFileBrowserLayout = new ListLayoutView(mContext).init();
+            mFileBrowserLayout = new ListLayoutView(mContext, this).init();
         else
-            mFileBrowserLayout = new GridLayoutView(mContext).init();
+            mFileBrowserLayout = new GridLayoutView(mContext, this).init();
 
 
 
+    }
+
+    /**
+     * Sets the default directory to show when the FileBrowserView is initialized.
+     *
+     * @param directoryPath The path of the directory to display.
+     *
+     * @return An instance of this FileBrowserView to allow method chaining.
+     */
+    public FileBrowserView setDefaultDirectory(String directoryPath) {
+        mDefaultDir = directoryPath;
+        return this;
     }
 
     /**
@@ -77,13 +128,52 @@ public class FileBrowserView extends View {
      *
      * @param layoutType Use one of the following two options: {@link #FILE_BROWSER_LIST_LAYOUT} or
      *                   {@link #FILE_BROWSER_GRID_LAYOUT}.
+     *
+     * @return An instance of this FileBrowserView to allow method chaining.
      */
-    public void setFileBrowserLayoutType(int layoutType) {
+    public FileBrowserView setFileBrowserLayoutType(int layoutType) {
         mFileBrowserLayoutType = layoutType;
+        return this;
     }
 
+    /**
+     * Sets whether hidden files should be shown or not.
+     *
+     * @param show Specifies whether hidden files should be shown or not.
+     *
+     * @return An instance of this FileBrowserView to allow method chaining.
+     */
+    public FileBrowserView showHiddenFiles(boolean show) {
+        mShowHiddenFiles = show;
+        return this;
+    }
+
+    /**
+     * @return The current layout type for this FileBrowserView instance.
+     */
     public int getFileBrowserLayoutType() {
         return mFileBrowserLayoutType;
+    }
+
+    /**
+     * @return The default directory that is displayed for this FileBrowserView instance.
+     */
+    public String getDefaultDirectory() {
+        return mDefaultDir;
+    }
+
+    /**
+     * @return Whether or not hidden files/folders should be displayed.
+     */
+    public boolean shouldShowHiddenFiles() {
+        return mShowHiddenFiles;
+    }
+
+    /**
+     * @return The file browser engine instance for this view.
+     */
+    public FileBrowserEngine getFileBrowserEngine() {
+        return mFileBrowserEngine;
     }
 
 }

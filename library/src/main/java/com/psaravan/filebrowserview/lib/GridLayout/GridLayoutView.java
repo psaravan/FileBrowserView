@@ -16,9 +16,10 @@
 package com.psaravan.filebrowserview.lib.GridLayout;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.GridView;
+
+import com.psaravan.filebrowserview.lib.View.FileBrowserView;
 
 /**
  * Grid layout view implementation for the file browser.
@@ -30,27 +31,18 @@ public class GridLayoutView extends View {
     //Context.
     private Context mContext;
 
+    //Parent file browser view.
+    private FileBrowserView mFileBrowserView;
+
     //View children.
     private GridView mGridView;
 
-    public GridLayoutView(Context context) {
+    public GridLayoutView(Context context, FileBrowserView fileBrowserView) {
         super(context);
         mContext = context;
+        mFileBrowserView = fileBrowserView;
         init();
     }
-
-    public GridLayoutView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        mContext = context;
-        init();
-    }
-
-    public GridLayoutView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        mContext = context;
-        init();
-    }
-
 
     /**
      * Inflates the grid layout and initializes each individual View child.
