@@ -9,7 +9,7 @@ Features (under development)
 =============================
 
 * Customizable interface
-* Full support for copy/cut/paste/delete/move operations
+* Built-in support for copy/cut/paste/delete/move operations
 * Can be used in Fragments, Activities, and DialogFragments
 * Tabs to quickly switch between multiple folder locations
 * More features coming soon!
