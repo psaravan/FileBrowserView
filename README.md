@@ -1,7 +1,7 @@
 What is it?
 ==============
 
-FileBrowserView is a powerful drop-in view for file/folder browser. Using it is as simple as adding the view to your fragment/activity and running your app. Note that the library is currently in active development (alpha) and is not yet fully functional. 
+FileBrowserView is a powerful drop-in view for file/folder browsing. Using it is as simple as adding the view to your fragment/activity and running your app. Note that the library is currently in active development (alpha) and is not yet fully functional. 
 
 Contributions, feature requests and bug reports are welcome. 
 
