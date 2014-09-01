@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Size of the left icon inside a ListView. -->
+    <dimen name="list_view_left_icon_size">78dp</dimen>
+</resources>

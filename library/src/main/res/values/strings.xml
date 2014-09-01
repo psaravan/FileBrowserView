@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">library</string>
+    <string name="type">type</string>
+    <string name="path">path</string>
+    <string name="name">name</string>
+    <string name="size">size</string>
+    <string name="position">position</string>
 </resources>

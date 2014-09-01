@@ -19,21 +19,23 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.AdapterData;
+import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
 import com.psaravan.filebrowserview.lib.R;
+import com.psaravan.filebrowserview.lib.Utils.Utils;
+import com.psaravan.filebrowserview.lib.View.AbstractAdapter;
 
 /**
  * Adapter for the ListView layout.
  *
  * @author Saravan Pantham
  */
-public class ListLayoutAdapter extends ArrayAdapter<String> {
+public class ListLayoutAdapter extends AbstractAdapter {
 
     //Context.
     private Context mContext;
@@ -42,7 +44,7 @@ public class ListLayoutAdapter extends ArrayAdapter<String> {
     private AdapterData mAdapterData;
 
     public ListLayoutAdapter(Context context, int resource, AdapterData adapterData) {
-        super(context, resource);
+        super(context, resource, adapterData);
         mContext = context;
         mAdapterData = adapterData;
     }
@@ -55,7 +57,7 @@ public class ListLayoutAdapter extends ArrayAdapter<String> {
 
             convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, parent, false);
             ListView.LayoutParams params = (ListView.LayoutParams) convertView.getLayoutParams();
-            params.height = (int) mApp.convertDpToPixels(72.0f, mContext);
+            params.height = (int) Utils.convertDpToPixels(72.0f, mContext);
             convertView.setLayoutParams(params);
 
             holder = new FoldersViewHolder();
@@ -64,18 +66,9 @@ public class ListLayoutAdapter extends ArrayAdapter<String> {
             holder.fileFolderNameText = (TextView) convertView.findViewById(R.id.listViewTitleText);
             holder.overflowButton = (ImageButton) convertView.findViewById(R.id.listViewOverflow);
             holder.rightSubText = (TextView) convertView.findViewById(R.id.listViewRightSubText);
-
-            holder.fileFolderIcon.setScaleX(0.5f);
-            holder.fileFolderIcon.setScaleY(0.55f);
             holder.rightSubText.setVisibility(View.INVISIBLE);
 
-            holder.fileFolderNameText.setTextColor(UIElementsHelper.getThemeBasedTextColor(mContext));
-            holder.fileFolderNameText.setTypeface(TypefaceHelper.getTypeface(mContext, "Roboto-Regular"));
-
-            holder.fileFolderSizeText.setTextColor(UIElementsHelper.getSmallTextColor(mContext));
-            holder.fileFolderSizeText.setTypeface(TypefaceHelper.getTypeface(mContext, "Roboto-Regular"));
-
-            holder.overflowButton.setImageResource(UIElementsHelper.getIcon(mContext, "ic_action_overflow"));
+            holder.overflowButton.setImageResource(R.drawable.ic_action_overflow_universal);
             holder.overflowButton.setFocusable(false);
             holder.overflowButton.setFocusableInTouchMode(false);
             holder.overflowButton.setOnClickListener(overflowClickListener);
@@ -85,44 +78,53 @@ public class ListLayoutAdapter extends ArrayAdapter<String> {
             holder = (FoldersViewHolder) convertView.getTag();
         }
 
-        holder.fileFolderNameText.setText(mFileFolderNameList.get(position));
-        holder.fileFolderSizeText.setText(mFileFolderSizeList.get(position));
+        holder.fileFolderNameText.setText(getNamesList().get(position));
+        holder.fileFolderSizeText.setText(getSizesList().get(position));
 
         //Set the icon based on whether the item is a folder or a file.
-        if (mFileFolderTypeList.get(position)==FilesFoldersFragment.FOLDER) {
+        if (getTypesList().get(position)== FileBrowserEngine.FOLDER) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_folderblue);
-            convertView.setTag(R.string.folder_list_item_type, FilesFoldersFragment.FOLDER);
-            convertView.setTag(R.string.folder_path, mFileFolderPathsList.get(position));
+            convertView.setTag(R.string.type, FileBrowserEngine.FOLDER);
+            convertView.setTag(R.string.path, getPathsList().get(position));
             convertView.setTag(R.string.position, position);
 
-        } else if (mFileFolderTypeList.get(position)==FilesFoldersFragment.AUDIO_FILE) {
+        } else if (getTypesList().get(position)==FileBrowserEngine.FILE_AUDIO) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_mp3);
-            convertView.setTag(R.string.folder_list_item_type, FilesFoldersFragment.AUDIO_FILE);
-            convertView.setTag(R.string.folder_path, mFileFolderPathsList.get(position));
+            convertView.setTag(R.string.type, FileBrowserEngine.FILE_AUDIO);
+            convertView.setTag(R.string.path, getPathsList().get(position));
             convertView.setTag(R.string.position, position);
 
-        } else if (mFileFolderTypeList.get(position)==FilesFoldersFragment.PICTURE_FILE) {
+        } else if (getTypesList().get(position)==FileBrowserEngine.FILE_PICTURE) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_png);
-            convertView.setTag(R.string.folder_list_item_type, FilesFoldersFragment.PICTURE_FILE);
-            convertView.setTag(R.string.folder_path, mFileFolderPathsList.get(position));
+            convertView.setTag(R.string.type, FileBrowserEngine.FILE_PICTURE);
+            convertView.setTag(R.string.path, getPathsList().get(position));
             convertView.setTag(R.string.position, position);
 
-        } else if (mFileFolderTypeList.get(position)==FilesFoldersFragment.VIDEO_FILE) {
+        } else if (getTypesList().get(position)==FileBrowserEngine.FILE_VIDEO) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_avi);
-            convertView.setTag(R.string.folder_list_item_type, FilesFoldersFragment.VIDEO_FILE);
-            convertView.setTag(R.string.folder_path, mFileFolderPathsList.get(position));
+            convertView.setTag(R.string.type, FileBrowserEngine.FILE_VIDEO);
+            convertView.setTag(R.string.path, getPathsList().get(position));
             convertView.setTag(R.string.position, position);
 
         } else {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_default);
-            convertView.setTag(R.string.folder_list_item_type, FilesFoldersFragment.FILE);
-            convertView.setTag(R.string.folder_path, mFileFolderPathsList.get(position));
+            convertView.setTag(R.string.type, FileBrowserEngine.FILE_GENERIC);
+            convertView.setTag(R.string.path, getPathsList().get(position));
             convertView.setTag(R.string.position, position);
 
         }
 
         return convertView;
     }
+
+    private View.OnClickListener overflowClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+
+        }
+
+    };
 
     /**
      * Holder class for the ListView layout.
@@ -133,6 +135,7 @@ public class ListLayoutAdapter extends ArrayAdapter<String> {
         public ImageView fileFolderIcon;
         public ImageButton overflowButton;
         public TextView rightSubText;
+
     }
 
 }
