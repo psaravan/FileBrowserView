@@ -28,14 +28,14 @@ import com.psaravan.filebrowserview.lib.FileBrowserEngine.AdapterData;
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
 import com.psaravan.filebrowserview.lib.R;
 import com.psaravan.filebrowserview.lib.Utils.Utils;
-import com.psaravan.filebrowserview.lib.View.AbstractAdapter;
+import com.psaravan.filebrowserview.lib.View.AbstractFileBrowserAdapter;
 
 /**
  * Adapter for the ListView layout.
  *
  * @author Saravan Pantham
  */
-public class ListLayoutAdapter extends AbstractAdapter {
+public class ListLayoutAdapter extends AbstractFileBrowserAdapter {
 
     //Context.
     private Context mContext;
@@ -43,10 +43,11 @@ public class ListLayoutAdapter extends AbstractAdapter {
     //Adapter data.
     private AdapterData mAdapterData;
 
-    public ListLayoutAdapter(Context context, int resource, AdapterData adapterData) {
-        super(context, resource, adapterData);
+    public ListLayoutAdapter(Context context, AdapterData adapterData) {
+        super(context, adapterData.getNamesList());
         mContext = context;
         mAdapterData = adapterData;
+
     }
 
     @Override
@@ -81,38 +82,39 @@ public class ListLayoutAdapter extends AbstractAdapter {
         holder.fileFolderNameText.setText(getNamesList().get(position));
         holder.fileFolderSizeText.setText(getSizesList().get(position));
 
-        //Set the icon based on whether the item is a folder or a file.
-        if (getTypesList().get(position)== FileBrowserEngine.FOLDER) {
+        /*
+         * Set the icon based on whether the item is a folder or a file.
+         * Also make sure to set the type of the item as a tag for this
+         * row.
+         */
+        if (getTypesList().get(position)==FileBrowserEngine.FOLDER) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_folderblue);
             convertView.setTag(R.string.type, FileBrowserEngine.FOLDER);
-            convertView.setTag(R.string.path, getPathsList().get(position));
-            convertView.setTag(R.string.position, position);
 
         } else if (getTypesList().get(position)==FileBrowserEngine.FILE_AUDIO) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_mp3);
             convertView.setTag(R.string.type, FileBrowserEngine.FILE_AUDIO);
-            convertView.setTag(R.string.path, getPathsList().get(position));
-            convertView.setTag(R.string.position, position);
 
         } else if (getTypesList().get(position)==FileBrowserEngine.FILE_PICTURE) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_png);
             convertView.setTag(R.string.type, FileBrowserEngine.FILE_PICTURE);
-            convertView.setTag(R.string.path, getPathsList().get(position));
-            convertView.setTag(R.string.position, position);
 
         } else if (getTypesList().get(position)==FileBrowserEngine.FILE_VIDEO) {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_avi);
             convertView.setTag(R.string.type, FileBrowserEngine.FILE_VIDEO);
-            convertView.setTag(R.string.path, getPathsList().get(position));
-            convertView.setTag(R.string.position, position);
 
         } else {
             holder.fileFolderIcon.setImageResource(R.drawable.icon_default);
             convertView.setTag(R.string.type, FileBrowserEngine.FILE_GENERIC);
-            convertView.setTag(R.string.path, getPathsList().get(position));
-            convertView.setTag(R.string.position, position);
 
         }
+
+        /* Save the path and position of the file/folder as this row's tag(s).
+         * You MUST do this or the click listener for the list/grid view will not
+         * work.
+         */
+        convertView.setTag(R.string.path, getPathsList().get(position));
+        convertView.setTag(R.string.position, position);
 
         return convertView;
     }
@@ -121,7 +123,7 @@ public class ListLayoutAdapter extends AbstractAdapter {
 
         @Override
         public void onClick(View view) {
-
+            //TODO auto-generated method stub.
         }
 
     };

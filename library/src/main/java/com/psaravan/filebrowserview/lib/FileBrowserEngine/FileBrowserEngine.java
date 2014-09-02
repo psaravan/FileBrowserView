@@ -89,7 +89,7 @@ public class FileBrowserEngine {
             for(int i=0; i < files.length; i++) {
 
                 File file = files[i];
-                if (file.isHidden()==mFileBrowserView.shouldShowHiddenFiles() && file.canRead()) {
+                if (file.isHidden()!=mFileBrowserView.shouldShowHiddenFiles() && file.canRead()) {
 
                     if (file.isDirectory()) {
 

@@ -16,8 +16,6 @@
 package com.psaravan.filebrowserview.lib.View;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.AdapterData;
@@ -29,18 +27,17 @@ import java.util.ArrayList;
  *
  * @author Saravan Pantham
  */
-public abstract class AbstractAdapter extends ArrayAdapter<String> {
+public abstract class AbstractFileBrowserAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
     private AdapterData mAdapterData;
 
-    public AbstractAdapter(Context context, int layoutResourceId, AdapterData adapterData) {
-        super(context, layoutResourceId);
+    public AbstractFileBrowserAdapter(Context context, ArrayList<String> namesList) {
+        super(context, -1, namesList);
         mContext = context;
-        mAdapterData = adapterData;
     }
 
-    /**
+/*    *//**
      * Get a View that displays the data at the specified position in the data set. You can either
      * create a View manually or inflate it from an XML layout file. When the View is inflated, the
      * parent View (GridView, ListView...) will apply default layout parameters unless you use
@@ -57,9 +54,21 @@ public abstract class AbstractAdapter extends ArrayAdapter<String> {
      *        {@link #getItemViewType(int)}).
      * @param parent The parent that this view will eventually be attached to
      * @return A View corresponding to the data at the specified position.
-     */
+     * @throws java.lang.IllegalStateException Thrown if {@link #mAdapterData} is null.
+     *//*
     @Override
-    public abstract View getView(int position, View convertView, ViewGroup parent);
+    public abstract View getView(int position, View convertView, ViewGroup parent)
+            throws IllegalStateException;*/
+
+    /**
+     * Updates the adapter with the specified {@link AdapterData} object. Must be called
+     * BEFORE the adapter is first applied to the list/grid view.
+     *
+     * @param adapterData The {@link AdapterData} object to set to this adapter instance.
+     */
+    public void setAdapterData(AdapterData adapterData) {
+        mAdapterData = adapterData;
+    }
 
     /**
      * @return The list of file/subfolder names within the current directory.

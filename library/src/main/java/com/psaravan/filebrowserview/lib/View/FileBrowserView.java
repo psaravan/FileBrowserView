@@ -19,6 +19,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
 import com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView;
@@ -31,7 +32,7 @@ import java.io.IOException;
  *
  * @author Saravan Pantham
  */
-public class FileBrowserView extends View {
+public class FileBrowserView extends FrameLayout {
 
     //Context.
     private Context mContext;
@@ -42,6 +43,9 @@ public class FileBrowserView extends View {
 
     //File browser engine.
     private FileBrowserEngine mFileBrowserEngine;
+
+    //Adapter to use for the list/grid view.
+    private AbstractFileBrowserAdapter mAdapter;
 
     //Default directory to display.
     private String mDefaultDir;
@@ -92,6 +96,14 @@ public class FileBrowserView extends View {
 
     }
 
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        for(int i = 0 ; i < getChildCount() ; i++) {
+            getChildAt(i).layout(l, t, r, b);
+        }
+
+    }
+
     /**
      * Initializes the file browser view and fires it up for first use. Must be called to
      * properly display the file browser.
@@ -106,8 +118,6 @@ public class FileBrowserView extends View {
             mFileBrowserLayout = new ListLayoutView(mContext, this).init();
         else
             mFileBrowserLayout = new GridLayoutView(mContext, this).init();
-
-
 
     }
 
@@ -137,13 +147,31 @@ public class FileBrowserView extends View {
     }
 
     /**
+     * Use this method to
+     * @param adapter An adapter that is extended from {@link AbstractFileBrowserAdapter}.
+     * @return An instance of this FileBrowserView to allow method chaining.
+     * @throws java.lang.IllegalArgumentException Thrown if the adapter passed in is not an instance
+     * of {@link com.psaravan.filebrowserview.lib.View.AbstractFileBrowserAdapter}.
+     */
+    public FileBrowserView setFileBrowserAdapter(AbstractFileBrowserAdapter adapter)
+            throws IllegalArgumentException {
+
+        if (!(adapter instanceof AbstractFileBrowserAdapter))
+            throw new IllegalArgumentException("The adapter you pass into setFileBrowserAdapter() " +
+                                               "must be a subclass of AbstractFileBrowserAdapter.");
+
+        mAdapter = adapter;
+        return this;
+    }
+
+    /**
      * Sets whether hidden files should be shown or not.
      *
      * @param show Specifies whether hidden files should be shown or not.
      *
      * @return An instance of this FileBrowserView to allow method chaining.
      */
-    public FileBrowserView showHiddenFiles(boolean show) {
+    public FileBrowserView setShowHiddenFiles(boolean show) {
         mShowHiddenFiles = show;
         return this;
     }
@@ -156,7 +184,7 @@ public class FileBrowserView extends View {
     }
 
     /**
-     * @return The default directory that is displayed for this FileBrowserView instance.
+     * @return The default directory that should be displayed for this FileBrowserView instance.
      */
     public String getDefaultDirectory() {
         return mDefaultDir;
@@ -174,6 +202,13 @@ public class FileBrowserView extends View {
      */
     public FileBrowserEngine getFileBrowserEngine() {
         return mFileBrowserEngine;
+    }
+
+    /**
+     * @return The adapter that backs the list/grid view for FileBrowserView instance.
+     */
+    public AbstractFileBrowserAdapter getFileBrowserAdapter() {
+        return mAdapter;
     }
 
 }

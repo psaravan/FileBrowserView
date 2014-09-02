@@ -33,11 +33,8 @@ public class ListLayoutView extends View {
     //Context.
     private Context mContext;
 
-    //Parent FileBrowserView.
+    //Parent FileBrowserView and its children.
     private FileBrowserView mFileBrowserView;
-
-    //The view and its children.
-    private ListLayoutView mView;
     private ListView mListView;
 
     public ListLayoutView(Context context, FileBrowserView fileBrowserView) {
@@ -49,18 +46,15 @@ public class ListLayoutView extends View {
 
     /**
      * Inflates the layout and sets the list's adapter.
-     *
-     * @return A reference to this view's instance.
      */
     public ListLayoutView init() {
         //Inflate the view from the XML resource.
-        mView = (ListLayoutView) inflate(mContext, R.layout.simple_list_file_browser, null);
-        mListView = (ListView) mView.findViewById(R.id.file_browser_list_view);
+        View.inflate(mContext, R.layout.simple_list_file_browser, mFileBrowserView);
+        mListView = (ListView) mFileBrowserView.findViewById(R.id.file_browser_list_view);
 
         //Display the default dir.
         showDir(mFileBrowserView.getDefaultDirectory());
-
-        return mView;
+        return this;
     }
 
     /**
@@ -72,7 +66,20 @@ public class ListLayoutView extends View {
         //Grab the directory's data to feed to the list adapter.
         AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(directoryPath);
 
+        //Check if the user wants to use a custom adapter.
+        if (mFileBrowserView.getFileBrowserAdapter()!=null) {
+            //The user called setFileBrowserAdapter() and is using a custom adapter.
+            mFileBrowserView.getFileBrowserAdapter().setAdapterData(adapterData);
 
+        } else {
+            //Nope, no custom adapter, so fall back to the default adapter.
+            ListLayoutAdapter adapter = new ListLayoutAdapter(mContext, adapterData);
+            mFileBrowserView.setFileBrowserAdapter(adapter);
+
+        }
+
+        //Apply the adapter to the ListView.
+        mListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
 
     }
 
