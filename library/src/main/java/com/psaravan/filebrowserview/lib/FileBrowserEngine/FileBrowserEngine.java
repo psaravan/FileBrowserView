@@ -65,19 +65,16 @@ public class FileBrowserEngine {
     /**
      * Loads the specified folder.
      *
-     * @param directoryPath The file path of the directory to load.
+     * @param directory The file object to points to the directory to load.
      * @return An {@link AdapterData} object that holds the data of the specified directory.
      */
-    public AdapterData loadDir(String directoryPath) {
+    public AdapterData loadDir(File directory) {
 
         //Init the directory's data arrays.
         ArrayList<String> namesList = new ArrayList<String>();
         ArrayList<String> pathsList = new ArrayList<String>();
         ArrayList<Integer> typesList = new ArrayList<Integer>();
         ArrayList<String> sizesList = new ArrayList<String>();
-
-        //Create a new file for the selected directory.
-        File directory = new File(directoryPath);
 
         //Grab a list of all files/subdirs within the specified directory.
         File[] files = directory.listFiles();

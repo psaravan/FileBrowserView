@@ -16,29 +16,33 @@
 package com.psaravan.filebrowserview.lib.ListLayout;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.AdapterData;
 import com.psaravan.filebrowserview.lib.R;
+import com.psaravan.filebrowserview.lib.View.BaseLayoutView;
 import com.psaravan.filebrowserview.lib.View.FileBrowserView;
+
+import java.io.File;
 
 /**
  * List layout view implementation for the file browser.
  *
  * @author Saravan Pantham
  */
-public class ListLayoutView extends View {
+public class ListLayoutView extends BaseLayoutView {
 
     //Context.
     private Context mContext;
 
     //Parent FileBrowserView and its children.
     private FileBrowserView mFileBrowserView;
-    private ListView mListView;
 
-    public ListLayoutView(Context context, FileBrowserView fileBrowserView) {
-        super(context);
+    public ListLayoutView(Context context, AttributeSet attributeSet, FileBrowserView fileBrowserView) {
+        super(context, attributeSet);
         mContext = context;
         mFileBrowserView = fileBrowserView;
         init();
@@ -50,7 +54,7 @@ public class ListLayoutView extends View {
     public ListLayoutView init() {
         //Inflate the view from the XML resource.
         View.inflate(mContext, R.layout.simple_list_file_browser, mFileBrowserView);
-        mListView = (ListView) mFileBrowserView.findViewById(R.id.file_browser_list_view);
+        mAbsListView = (ListView) mFileBrowserView.findViewById(R.id.file_browser_list_view);
 
         //Display the default dir.
         showDir(mFileBrowserView.getDefaultDirectory());
@@ -60,11 +64,11 @@ public class ListLayoutView extends View {
     /**
      * Loads the directory structure of the specified dir and sets the ListView's adapter.
      *
-     * @param directoryPath The path of the directory to show.
+     * @param directory The File object that points to the directory to load.
      */
-    private void showDir(String directoryPath) {
+    private void showDir(File directory) {
         //Grab the directory's data to feed to the list adapter.
-        AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(directoryPath);
+        AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(directory);
 
         //Check if the user wants to use a custom adapter.
         if (mFileBrowserView.getFileBrowserAdapter()!=null) {
@@ -73,23 +77,26 @@ public class ListLayoutView extends View {
 
         } else {
             //Nope, no custom adapter, so fall back to the default adapter.
-            ListLayoutAdapter adapter = new ListLayoutAdapter(mContext, adapterData);
-            mFileBrowserView.setFileBrowserAdapter(adapter);
+            ListLayoutAdapter adapter = new ListLayoutAdapter(mContext, mFileBrowserView, adapterData);
+            mFileBrowserView.setCustomAdapter(adapter);
 
         }
 
         //Apply the adapter to the ListView.
-        mListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
+        mAbsListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
 
     }
 
     /**
-     * Use this method to customize/modify the ListView used by FileBrowserView.
-     *
-     * @return The ListView instance used by this FileBrowserView.
+     * Click listener for the ListView.
      */
-    public ListView getListView() {
-        return mListView;
-    }
+    private ListView.OnItemClickListener onItemClickListener = new ListView.OnItemClickListener() {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        }
+
+    };
 
 }

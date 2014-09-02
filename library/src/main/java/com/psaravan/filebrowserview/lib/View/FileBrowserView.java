@@ -18,28 +18,34 @@ package com.psaravan.filebrowserview.lib.View;
 import android.content.Context;
 import android.os.Environment;
 import android.util.AttributeSet;
-import android.view.View;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
 import com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView;
 import com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView;
 
-import java.io.IOException;
+import java.io.File;
 
 /**
- * Base View class for the library.
+ * Base implementation class for FileBrowserView. Each FileBrowserView object is essentially a
+ * ViewGroup that consists of other view children (an optional header view and an AbsListView).
+ * This class is simply a container for the main view class, which is determined by the type of
+ * layout that the user selects ({@link com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView}
+ * vs {@link com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView}). This class also stores
+ * any settings/preferences that the user requests for the view.
  *
  * @author Saravan Pantham
  */
 public class FileBrowserView extends FrameLayout {
 
-    //Context.
+    //Context and AttributeSet.
     private Context mContext;
+    private AttributeSet mAttributeSet;
 
     //Current layout type selection/view reference.
     private int mFileBrowserLayoutType = FILE_BROWSER_LIST_LAYOUT;
-    private View mFileBrowserLayout;
+    private BaseLayoutView mFileBrowserLayout;
 
     //File browser engine.
     private FileBrowserEngine mFileBrowserEngine;
@@ -48,10 +54,14 @@ public class FileBrowserView extends FrameLayout {
     private AbstractFileBrowserAdapter mAdapter;
 
     //Default directory to display.
-    private String mDefaultDir;
+    private File mDefaultDir = null;
 
     //Flag to show/hide hidden files.
     private boolean mShowHiddenFiles = false;
+
+    //Flags to display individual item attributes in the view.
+    private boolean mShowOverflowMenus = true;
+    private boolean mShowItemSizes = true;
 
     //Layout type constants.
     public static final int FILE_BROWSER_LIST_LAYOUT = 0;
@@ -61,38 +71,18 @@ public class FileBrowserView extends FrameLayout {
         super(context);
         mContext = context;
 
-        try {
-            mDefaultDir = Environment.getExternalStorageDirectory().getCanonicalPath().toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mDefaultDir = "/";
-        }
-
     }
 
-    public FileBrowserView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+    public FileBrowserView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
         mContext = context;
-
-        try {
-            mDefaultDir = Environment.getExternalStorageDirectory().getCanonicalPath().toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mDefaultDir = "/";
-        }
+        mAttributeSet = attributeSet;
 
     }
 
     public FileBrowserView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
-
-        try {
-            mDefaultDir = Environment.getExternalStorageDirectory().getCanonicalPath().toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            mDefaultDir = "/";
-        }
 
     }
 
@@ -110,26 +100,40 @@ public class FileBrowserView extends FrameLayout {
      */
     public void init() {
 
+        //Check if the default dir was set.
+        if (getDefaultDirectory()==null)
+            setDefaultDirectory(Environment.getExternalStorageDirectory());
+
         //Initialize the file browser engine for this view instance.
         mFileBrowserEngine = new FileBrowserEngine(mContext, this);
 
         //Inflate the view's layout based on the selected layout.
         if (getFileBrowserLayoutType()==FILE_BROWSER_LIST_LAYOUT)
-            mFileBrowserLayout = new ListLayoutView(mContext, this).init();
+            mFileBrowserLayout = new ListLayoutView(mContext, mAttributeSet, this).init();
         else
-            mFileBrowserLayout = new GridLayoutView(mContext, this).init();
+            mFileBrowserLayout = new GridLayoutView(mContext, mAttributeSet, this).init();
 
     }
 
     /**
      * Sets the default directory to show when the FileBrowserView is initialized.
      *
-     * @param directoryPath The path of the directory to display.
-     *
+     * @param directory The file that points to the default directory to display.
      * @return An instance of this FileBrowserView to allow method chaining.
+     * @throws java.lang.IllegalArgumentException Thrown if the input File argument doesn't
+     *         point to a valid directory or the directory can't be read.
      */
-    public FileBrowserView setDefaultDirectory(String directoryPath) {
-        mDefaultDir = directoryPath;
+    public FileBrowserView setDefaultDirectory(File directory) throws IllegalArgumentException {
+
+        if (directory==null || !directory.isDirectory())
+            throw new IllegalArgumentException("You must use a File object that points to a valid, " +
+                                               "accessible directory.");
+
+        if (!directory.canRead())
+            throw new IllegalArgumentException("Could not read the specified default directory. Make " +
+                                               "sure you have permission to read the directory.");
+
+        mDefaultDir = directory;
         return this;
     }
 
@@ -138,7 +142,6 @@ public class FileBrowserView extends FrameLayout {
      *
      * @param layoutType Use one of the following two options: {@link #FILE_BROWSER_LIST_LAYOUT} or
      *                   {@link #FILE_BROWSER_GRID_LAYOUT}.
-     *
      * @return An instance of this FileBrowserView to allow method chaining.
      */
     public FileBrowserView setFileBrowserLayoutType(int layoutType) {
@@ -147,18 +150,23 @@ public class FileBrowserView extends FrameLayout {
     }
 
     /**
-     * Use this method to
+     * Call this method to use your own adapter for the list/grid view. The adapter must be a
+     * subclass of {@link com.psaravan.filebrowserview.lib.View.AbstractFileBrowserAdapter}. See
+     * {@link com.psaravan.filebrowserview.lib.ListLayout.ListLayoutAdapter} for an example of a
+     * ListView adapter and {@link com.psaravan.filebrowserview.lib.GridLayout.GridLayoutAdapter}
+     * for an example of a GridView adapter.
+     *
      * @param adapter An adapter that is extended from {@link AbstractFileBrowserAdapter}.
      * @return An instance of this FileBrowserView to allow method chaining.
      * @throws java.lang.IllegalArgumentException Thrown if the adapter passed in is not an instance
      * of {@link com.psaravan.filebrowserview.lib.View.AbstractFileBrowserAdapter}.
      */
-    public FileBrowserView setFileBrowserAdapter(AbstractFileBrowserAdapter adapter)
+    public FileBrowserView setCustomAdapter(AbstractFileBrowserAdapter adapter)
             throws IllegalArgumentException {
 
         if (!(adapter instanceof AbstractFileBrowserAdapter))
-            throw new IllegalArgumentException("The adapter you pass into setFileBrowserAdapter() " +
-                                               "must be a subclass of AbstractFileBrowserAdapter.");
+            throw new IllegalArgumentException("The adapter you pass into setCustomAdapter() " +
+                                               "must extend AbstractFileBrowserAdapter.");
 
         mAdapter = adapter;
         return this;
@@ -168,11 +176,42 @@ public class FileBrowserView extends FrameLayout {
      * Sets whether hidden files should be shown or not.
      *
      * @param show Specifies whether hidden files should be shown or not.
-     *
      * @return An instance of this FileBrowserView to allow method chaining.
      */
     public FileBrowserView setShowHiddenFiles(boolean show) {
         mShowHiddenFiles = show;
+        return this;
+    }
+
+    /**
+     * Sets whether or not the overflow menu should be shown or not (defaults to true). Note that
+     * this method will have no effect if you use your own adapter via
+     * {@link #setCustomAdapter(AbstractFileBrowserAdapter)}.
+     *
+     * @param show Whether or not the overflow menu should be shown.
+     * @return An instance of this FileBrowserView to allow method chaining.
+     */
+    public FileBrowserView showOverflowMenus(boolean show) {
+        mShowOverflowMenus = show;
+        return this;
+    }
+
+    /**
+     * Sets whether or not each file/folder's size should be displayed underneath the name (defaults
+     * to true). Note that this method will have no effect if you use your own adapter via
+     * {@link #setCustomAdapter(AbstractFileBrowserAdapter)}.
+     *
+     * If the item is a folder, the number of subfiles/subfolders will be displayed in the
+     * following format: xxx items.
+     *
+     * If the item is a file, the size of the file will be displayed in the most appropriate
+     * units: xxx KB, xxx bytes, xxx MB, etc.
+     *
+     * @param show Whether or not the overflow menu should be shown.
+     * @return An instance of this FileBrowserView to allow method chaining.
+     */
+    public FileBrowserView showItemSizes(boolean show) {
+        mShowItemSizes = show;
         return this;
     }
 
@@ -184,9 +223,10 @@ public class FileBrowserView extends FrameLayout {
     }
 
     /**
-     * @return The default directory that should be displayed for this FileBrowserView instance.
+     * @return A File object that points to the default directory that should be
+     *         displayed for this FileBrowserView instance.
      */
-    public String getDefaultDirectory() {
+    public File getDefaultDirectory() {
         return mDefaultDir;
     }
 
@@ -209,6 +249,31 @@ public class FileBrowserView extends FrameLayout {
      */
     public AbstractFileBrowserAdapter getFileBrowserAdapter() {
         return mAdapter;
+    }
+
+    /**
+     * @return The list/grid view that displays the file system.
+     */
+    public AbsListView getAbsListView() {
+        return mFileBrowserLayout.getAbsListView();
+    }
+
+    /**
+     * @return Whether or not each individual item's overflow menu should be displayed in the
+     *         AbsListView. The returned value has no effect if you are using a custom adapter
+     *         via {@link #setCustomAdapter(AbstractFileBrowserAdapter)}.
+     */
+    public boolean shouldShowOverflowMenus() {
+        return mShowOverflowMenus;
+    }
+
+    /**
+     * @return Whether or not each individual item's size should be displayed in the AbsListView.
+     *         The returned value has no effect if you are using a custom adapter via
+     *         {@link #setCustomAdapter(AbstractFileBrowserAdapter)}.
+     */
+    public boolean shouldShowItemSizes() {
+        return mShowItemSizes;
     }
 
 }

@@ -16,9 +16,9 @@
 package com.psaravan.filebrowserview.lib.GridLayout;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.GridView;
+import android.util.AttributeSet;
 
+import com.psaravan.filebrowserview.lib.View.BaseLayoutView;
 import com.psaravan.filebrowserview.lib.View.FileBrowserView;
 
 /**
@@ -26,7 +26,7 @@ import com.psaravan.filebrowserview.lib.View.FileBrowserView;
  *
  * @author Saravan Pantham
  */
-public class GridLayoutView extends View {
+public class GridLayoutView extends BaseLayoutView {
 
     //Context.
     private Context mContext;
@@ -34,11 +34,8 @@ public class GridLayoutView extends View {
     //Parent file browser view.
     private FileBrowserView mFileBrowserView;
 
-    //View children.
-    private GridView mGridView;
-
-    public GridLayoutView(Context context, FileBrowserView fileBrowserView) {
-        super(context);
+    public GridLayoutView(Context context, AttributeSet attributeSet, FileBrowserView fileBrowserView) {
+        super(context, attributeSet);
         mContext = context;
         mFileBrowserView = fileBrowserView;
         init();

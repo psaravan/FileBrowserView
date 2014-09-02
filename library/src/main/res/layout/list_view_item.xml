@@ -95,6 +95,7 @@
         android:padding="8dp"
         android:layout_centerVertical="true"
         android:src="@drawable/ic_action_overflow_universal"
+        android:background="?android:selectableItemBackground"
         android:scaleX="0.75"
         android:scaleY="0.75"/>
 

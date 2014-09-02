@@ -16,6 +16,8 @@
 package com.psaravan.filebrowserview.lib.View;
 
 import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.AdapterData;
@@ -29,15 +31,19 @@ import java.util.ArrayList;
  */
 public abstract class AbstractFileBrowserAdapter extends ArrayAdapter<String> {
 
-    private Context mContext;
-    private AdapterData mAdapterData;
+    protected Context mContext;
+    protected AdapterData mAdapterData;
+    protected FileBrowserView mFileBrowserView;
 
-    public AbstractFileBrowserAdapter(Context context, ArrayList<String> namesList) {
+    public AbstractFileBrowserAdapter(Context context, FileBrowserView fileBrowserView,
+                                      ArrayList<String> namesList) {
         super(context, -1, namesList);
         mContext = context;
+        mFileBrowserView = fileBrowserView;
+
     }
 
-/*    *//**
+    /**
      * Get a View that displays the data at the specified position in the data set. You can either
      * create a View manually or inflate it from an XML layout file. When the View is inflated, the
      * parent View (GridView, ListView...) will apply default layout parameters unless you use
@@ -54,11 +60,20 @@ public abstract class AbstractFileBrowserAdapter extends ArrayAdapter<String> {
      *        {@link #getItemViewType(int)}).
      * @param parent The parent that this view will eventually be attached to
      * @return A View corresponding to the data at the specified position.
-     * @throws java.lang.IllegalStateException Thrown if {@link #mAdapterData} is null.
-     *//*
+     */
     @Override
-    public abstract View getView(int position, View convertView, ViewGroup parent)
-            throws IllegalStateException;*/
+    public abstract View getView(int position, View convertView, ViewGroup parent);
+
+    /**
+     * Called when the overflow menu button/icon is clicked. This is where you should implement
+     * your code for displaying the overflow menu (or any other action that should be performed
+     * when the overflow menu button is clicked). Note that this method has no effect if you
+     * use your own custom adapter via
+     * {@link com.psaravan.filebrowserview.lib.View.FileBrowserView#setCustomAdapter(AbstractFileBrowserAdapter)}.
+     *
+     * @param overflowView The view that should be used as the overflow menu's anchor.
+     */
+    public abstract void onOverflowClick(View overflowView);
 
     /**
      * Updates the adapter with the specified {@link AdapterData} object. Must be called

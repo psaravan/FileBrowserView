@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.AdapterData;
@@ -29,6 +30,7 @@ import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
 import com.psaravan.filebrowserview.lib.R;
 import com.psaravan.filebrowserview.lib.Utils.Utils;
 import com.psaravan.filebrowserview.lib.View.AbstractFileBrowserAdapter;
+import com.psaravan.filebrowserview.lib.View.FileBrowserView;
 
 /**
  * Adapter for the ListView layout.
@@ -37,16 +39,12 @@ import com.psaravan.filebrowserview.lib.View.AbstractFileBrowserAdapter;
  */
 public class ListLayoutAdapter extends AbstractFileBrowserAdapter {
 
-    //Context.
-    private Context mContext;
-
-    //Adapter data.
-    private AdapterData mAdapterData;
-
-    public ListLayoutAdapter(Context context, AdapterData adapterData) {
-        super(context, adapterData.getNamesList());
+    public ListLayoutAdapter(Context context, FileBrowserView fileBrowserView,
+                             AdapterData adapterData) {
+        super(context, fileBrowserView, adapterData.getNamesList());
         mContext = context;
         mAdapterData = adapterData;
+        mFileBrowserView = fileBrowserView;
 
     }
 
@@ -69,10 +67,26 @@ public class ListLayoutAdapter extends AbstractFileBrowserAdapter {
             holder.rightSubText = (TextView) convertView.findViewById(R.id.listViewRightSubText);
             holder.rightSubText.setVisibility(View.INVISIBLE);
 
-            holder.overflowButton.setImageResource(R.drawable.ic_action_overflow_universal);
-            holder.overflowButton.setFocusable(false);
-            holder.overflowButton.setFocusableInTouchMode(false);
-            holder.overflowButton.setOnClickListener(overflowClickListener);
+            //Show/hide any UI elements based on the user's preferences.
+            if (!mFileBrowserView.shouldShowItemSizes()) {
+                //Hide the item size TextViews.
+                ((View) holder.fileFolderSizeText.getParent()).setVisibility(View.GONE);
+                RelativeLayout.LayoutParams titleParams = (RelativeLayout.LayoutParams)
+                        holder.fileFolderNameText.getLayoutParams();
+                titleParams.addRule(RelativeLayout.CENTER_VERTICAL);
+                holder.fileFolderNameText.setLayoutParams(titleParams);
+            }
+
+            if (!mFileBrowserView.shouldShowOverflowMenus()) {
+                //Hide the overflow menus.
+                holder.overflowButton.setVisibility(View.GONE);
+            } else {
+                holder.overflowButton.setImageResource(R.drawable.ic_action_overflow_universal);
+                holder.overflowButton.setFocusable(false);
+                holder.overflowButton.setFocusableInTouchMode(false);
+                holder.overflowButton.setOnClickListener(overflowClickListener);
+
+            }
 
             convertView.setTag(holder);
         } else {
@@ -119,11 +133,16 @@ public class ListLayoutAdapter extends AbstractFileBrowserAdapter {
         return convertView;
     }
 
+    @Override
+    public void onOverflowClick(View overflowView) {
+        //TODO auto-generated method stub.
+    }
+
     private View.OnClickListener overflowClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View view) {
-            //TODO auto-generated method stub.
+            onOverflowClick(view);
         }
 
     };
