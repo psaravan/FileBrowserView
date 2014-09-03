@@ -13,7 +13,14 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    <title>FileBrowserView by psaravan</title>
+    <script type="text/javascript">
+      var image1 = new Image()
+      image1.src = "images/FileBrowserViewFramed1.png"
+      var image2 = new Image()
+      image2.src = "images/FileBrowserViewFramed2.png"
+    </script>
+
+    <title>FileBrowserView</title>
   </head>
 
   <body>
@@ -70,8 +77,20 @@ limitations under the License.
 
         <aside id="sidebar">
           
-          <a href="http://psaravan.github.io/FileBrowserView/images/FileBrowserViewFramed1.png"><img src="images/FileBrowserViewFramed1.png" width="279" height="472" alt="some_text"></a>
-          
+          <a href="http://psaravan.github.io/FileBrowserView/images/FileBrowserViewFramed1.png"><img src="images/FileBrowserViewFramed1.png" width="279" height="472" name="slide"></a>
+          <script type="text/javascript">
+            var step=1;
+            function slideit()
+            {
+                document.images.slide.src = eval("image"+step+".src");
+                if(step<2)
+                    step++;
+                else
+                    step=1;
+                setTimeout("slideit()",2500);
+            }
+            slideit();
+          </script>
         </aside>
       </div>
     </div>
