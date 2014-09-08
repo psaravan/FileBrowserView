@@ -36,6 +36,46 @@
       <div class="inner clearfix">
         <section id="main-content">
           <h1>Using the library</h1>
+          
+          <h4>Adding the library to your project</h4>
+        <p>You can download the library as a JAR file (recommended) or fork the entire project source into Android Studio. Once you've downloaded the library, add it to your project as a module.</p>
+        
+        <!-- ADDING THE VIEW TO YOUR LAYOUTS -->
+        <h4>Adding the view to your layouts</h4>
+        
+        <p>You can add FlexiImageView to any layout within an Activity or a Fragment. FlexiImageView is an extension of Android's built-in ImageView view, so you can add it to your XML files just like you'd add an ImageView: </p>
+        
+        <pre><code>&#60com.psaravan.flexiimageview.lib.View.FlexiImageView
+          android:id="@+id/flexiImageView"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content" /&#62</code></pre>
+
+        <!-- APPLYING VIEW EFFECTS -->
+        <h4>Using FlexiImageView's features</h4>
+        <p>First, create an instance of FlexiImageView within the Activity or Fragment where you added the view: </p>
+
+        <pre><code>FlexiImageView flexiImageView = (FlexiImageView) findViewById(R.id.flexiImageView);</code></pre>
+        
+        <p>You can now use FlexiImageView's public methods to apply effects/customize your view. Here's an example that changes the view's shape to an oval: </p>
+        
+        <pre><code>mFlexiImageView.setImageResource(R.drawable.test);
+        
+mFlexiImageView.setShape(FlexiImageView.SHAPE_OVAL)
+               .setOvalHorizontalRadius(0.75f)
+               .setOvalVerticalRadius(0.25f)
+               .draw();</code></pre>
+
+        <p>And here's the result: </p>
+        
+        
+        <p>Here are a few important points to note: 
+          <ul>
+            <li>The <code>draw()</code> method is what actually displays the image in the view container.</li>
+            <li>You must call setImageBitmap(), setImageResource(), or setImageDrawable() before calling the draw() method.</li>
+            <li>The draw() method should be the last method you call on your FlexiImageView instance. If you change any of the FlexiImageView's properties, you must call draw() again for the changes to be made visible.</li>
+          </ul>
+        </p>
+          
       </div>
     </div>
   </body>
