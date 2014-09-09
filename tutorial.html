@@ -46,7 +46,7 @@
         <h2>Adding the view to your layouts</h2>
         
         <p>You can add FileBrowserView to any layout within an Activity or a Fragment. FlexiImageView is an extension of Android's built-in <a href="http://developer.android.com/reference/android/widget/FrameLayout.html">FrameLayout</a>.
-           You can add it as a view within a ViewGroup or as a standalone ViewGroup within an Activity or Fragment.
+           You can add it as a view within a <a href="http://developer.android.com/reference/android/view/ViewGroup.html">ViewGroup</a> or as a standalone ViewGroup within an Activity or Fragment.
         </p>
         
         <pre><code>&#60!-- View declaration. You can use all standard view attributes here. --&#62
@@ -57,27 +57,31 @@
 
         <!-- APPLYING VIEW EFFECTS -->
         <h2>Using FlexiImageView's features</h2>
-        <p>First, create an instance of FlexiImageView within the Activity or Fragment where you added the view: </p>
+        <p>First, create an instance of FileBrowserView within the Activity or Fragment where you added the view: </p>
 
-        <pre><code>FlexiImageView flexiImageView = (FlexiImageView) findViewById(R.id.flexiImageView);</code></pre>
+        <pre><code>FileBrowserView fileBrowserView = (FileBrowserView) findViewById(R.id.fileBrowserView);</code></pre>
         
-        <p>You can now use FlexiImageView's public methods to apply effects/customize your view. Here's an example that changes the view's shape to an oval: </p>
+        <p>You can now customize your view using the FileBrowserView instance you just created. Here's an example that 
+           shows how to set up and initialize a basic version of the view:
+        </p>
         
-        <pre><code>mFlexiImageView.setImageResource(R.drawable.test);
-        
-mFlexiImageView.setShape(FlexiImageView.SHAPE_OVAL)
-               .setOvalHorizontalRadius(0.75f)
-               .setOvalVerticalRadius(0.25f)
-               .draw();</code></pre>
+        <pre><code>//Customize the view.
+        fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOUT) //Set the type of view to use.
+                      .setDefaultDirectory(new File("/")) //Set the default directory to show.
+                      .setShowHiddenFiles(true) //Set whether or not you want to show hidden files.
+                      .showItemSizes(true) //Shows the sizes of each item in the list.
+                      .showOverflowMenus(true) //Shows the overflow menus for each item in the list.
+                      .init(); //Loads the view. You MUST call this method, or the view will not be displayed.</code></pre>
 
         <p>And here's the result: </p>
         
+        <img src="">
         
         <p>Here are a few important points to note: 
           <ul>
-            <li>The <code>draw()</code> method is what actually displays the image in the view container.</li>
-            <li>You must call setImageBitmap(), setImageResource(), or setImageDrawable() before calling the draw() method.</li>
-            <li>The draw() method should be the last method you call on your FlexiImageView instance. If you change any of the FlexiImageView's properties, you must call draw() again for the changes to be made visible.</li>
+            <li>The <code>init()</code> method is what actually displays the view to the user. You <strong>must</strong> call this method or the view will not be visible.</li>
+            <li>If you set/change any options for the view after calling the <code>init()</code> method, you must call <code>init()</code> again to display the changes.</li>
+            <li></li>
           </ul>
         </p>
           
