@@ -55,7 +55,7 @@
     android:layout_height="wrap_content"
     android:layout_width="match_parent" /&#62</code></pre>
 
-        <!-- APPLYING VIEW EFFECTS -->
+        <!-- GETTING A BASIC VERSION OF FILEBROWSERVIEW UP AND RUNNING -->
         <h2>Getting a basic version of FileBrowserView up and running</h2>
         <p>First, create an instance of FileBrowserView within the Activity or Fragment where you added the view: </p>
 
@@ -79,12 +79,24 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
         
         <p>Here are a few important points to note: 
           <ul>
-            <li>The <code>init()</code> method is what actually displays the view to the user. You <strong>must</strong> call this method or the view will not be visible.</li>
+            <li>The <code>init()</code> method is what actually displays the view to the user. You MUST call this method or the view will not be visible.</li>
             <li>If you set/change any options for the view after calling the <code>init()</code> method, you must call <code>init()</code> again to display the changes.</li>
           </ul>
         </p>
         
+        <!-- ADVANCED OPTIONS AND CUSTOMIZATION -->
+        <h2>Advanced options and customization</h2>
         
+        <p>This section will cover some of the customization options and power features that FileBrowserView has to offer.
+           You can mix and match most of these options to tailor the library to your needs.
+        </p>
+        
+        <h3>Using a custom adapter</h3>
+          
+          <p>The library comes with two different adapters by default (one each for the ListView and GridView representation). 
+            If you want to use a different layout for each list/grid item or want to customize the way the view elements look, 
+            you'll have to create a custom adapter. Here's how:
+          </p>
           
       </div>
     </div>
