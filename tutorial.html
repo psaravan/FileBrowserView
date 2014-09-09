@@ -95,7 +95,18 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
           
           <p>The library comes with two different adapters by default (one each for the ListView and GridView representation). 
             If you want to use a different layout for each list/grid item or want to customize how the view elements look, 
-            you'll have to create a custom adapter. Here's how:
+            you'll have to create a custom adapter.
+          </p>
+          
+          <p>
+            Your custom adapter MUST extend <a href="https://github.com/psaravan/FileBrowserView/blob/master/library/src/main/java/com/psaravan/filebrowserview/lib/View/AbstractFileBrowserAdapter.java">AbstractFileBrowserAdapter</a>.
+            If you do not use a subclass of AbstractFileBrowserAdapter, your app will crash with an IllegalArgumentException. Once you create an adapter class that extends AbstractFileBrowserView, 
+            make sure you override the <code>getView()</code> method. Just like a regular data adapter, this is where you can customize the view and logic for each item in the list/grid.
+          </p>
+          
+          <p>
+            You should also override the <code>onOverflowClick()</code> method. If your list/grid will display an overflow menu button for each item, call this method when the button is clicked.
+            If your list/grid won't have an overflow menu button, simply override the method and leave its body empty.
           </p>
           
       </div>
