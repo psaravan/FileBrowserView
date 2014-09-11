@@ -129,6 +129,29 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
           </p>
           
           <p>
+            You can now use these lists to display data about each individual file/folder in your list/grid item. For example, 
+            here's a code snippet that shows you how to implement the <code>getView()</code> method with the lists:
+            
+            <code>
+              @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        FoldersViewHolder holder = null;
+        if (convertView == null) {
+
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, parent, false);
+            
+            FoldersViewHolder holder = new FoldersViewHolder();
+            holder.title = (TextView) convertView.findViewById(R.id.title);
+            
+        }
+        
+        //Show the name of the item.
+        holder.title.setText(getNamesList().get(position));
+            </code>
+          </p>
+          
+          <p>
             Check out the default <a href="https://github.com/psaravan/FileBrowserView/blob/master/library/src/main/java/com/psaravan/filebrowserview/lib/ListLayout/ListLayoutAdapter.java">ListView adapter</a> and 
             the default <a href="https://github.com/psaravan/FileBrowserView/blob/master/library/src/main/java/com/psaravan/filebrowserview/lib/GridLayout/GridLayoutAdapter.java">GridView adapter</a> for a complete 
             example on how to build one. You can also go ahead and just use these adapters if they have everything you need.
