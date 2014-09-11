@@ -133,23 +133,23 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
             here's a code snippet that shows you how to implement the <code>getView()</code> method with the lists:
             
             <pre><code>
-              @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+@Override
+public View getView(int position, View convertView, ViewGroup parent) {
 
-        FoldersViewHolder holder = null;
-        if (convertView == null) {
+    FoldersViewHolder holder = null;
+    if (convertView == null) {
 
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, parent, false);
-            
-            FoldersViewHolder holder = new FoldersViewHolder();
-            holder.title = (TextView) convertView.findViewById(R.id.title);
-            
-        }
+        convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, parent, false);
         
-        //Show the name of the item.
-        holder.title.setText(getNamesList().get(position));
+        FoldersViewHolder holder = new FoldersViewHolder();
+        holder.title = (TextView) convertView.findViewById(R.id.title);
         
     }
+    
+    //Show the name of the item.
+    holder.title.setText(getNamesList().get(position));
+    
+}
             </code></pre>
           </p>
           
