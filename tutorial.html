@@ -110,10 +110,21 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
           </p>
           
           <p>
-            AbstractFileBrowserAdapter comes with a set of methods that allow you to grab the details of each file/folder item. Here's a list of them and what they should be used for:
+            AbstractFileBrowserAdapter comes with a set of methods that expose the details of each file/folder item. Each method returns an ArrayList with individual details on all the items in the list/grid. 
+            These ArrayLists are parallel lists, so you can grab all the details of an individual item by fetching the data at the same index in each list:
             <li>
               <ul><code>getNamesList()</code>: Returns an ArrayList of file/folder names within the current directory.</ul>
-              <ul><code>getNamesList()</code>: Returns an ArrayList of file/folder names within the current directory.</ul>
+              <ul><code>getSizesList()</code>: Returns an ArrayList of file/folder sizes within the current directory. 
+                File sizes are stored as formatted strings (3 MB, 44 KB, 6 GB, etc.) while folder sizes are stored as 
+                the number of items within that folder (3 items, 56 items, etc.).
+              </ul>
+              <ul><code>getTypesList()</code>: Returns an ArrayList of file/folder types within the current directory. 
+                The file/folder types are stored as Integer flags from the <a href="https://github.com/psaravan/FileBrowserView/blob/master/library/src/main/java/com/psaravan/filebrowserview/lib/FileBrowserEngine/FileBrowserEngine.java">FileBrowserEngine</a> class (FILE_AUDIO, 
+                FILE_PICTURE, FILE_VIDEO, FILE_GENERIC, FOLDER).
+              </ul>
+              <ul><code>getPathsList()</code>: Returns an ArrayList of file/folder paths within the currently directory. The paths are 
+                stored as canonical path strings.
+              </ul>
             </li>
           </p>
           
