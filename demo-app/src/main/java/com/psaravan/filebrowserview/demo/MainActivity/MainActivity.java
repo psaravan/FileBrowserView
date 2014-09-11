@@ -49,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
                         .setShowHiddenFiles(true) //Set whether or not you want to show hidden files.
                         .showItemSizes(true) //Shows the sizes of each item in the list.
                         .showOverflowMenus(true) //Shows the overflow menus for each item in the list.
+                        .showItemIcons(true) //Shows the icons next to each item name in the list.
                         .init(); //Loads the view. You MUST call this method, or the view will not be displayed.
 
     }

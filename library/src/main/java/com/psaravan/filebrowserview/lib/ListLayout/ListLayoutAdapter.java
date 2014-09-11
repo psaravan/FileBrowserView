@@ -88,6 +88,12 @@ public class ListLayoutAdapter extends AbstractFileBrowserAdapter {
 
             }
 
+            //Hide the icon if we have to.
+            if (!mFileBrowserView.shouldShowItemIcons())
+                holder.fileFolderIcon.setVisibility(View.GONE);
+            else
+                holder.fileFolderIcon.setVisibility(View.VISIBLE);
+
             convertView.setTag(holder);
         } else {
             holder = (FoldersViewHolder) convertView.getTag();
@@ -101,25 +107,28 @@ public class ListLayoutAdapter extends AbstractFileBrowserAdapter {
          * Also make sure to set the type of the item as a tag for this
          * row.
          */
-        if (getTypesList().get(position)==FileBrowserEngine.FOLDER) {
-            holder.fileFolderIcon.setImageResource(R.drawable.icon_folderblue);
-            convertView.setTag(R.string.type, FileBrowserEngine.FOLDER);
+        if (mFileBrowserView.shouldShowItemIcons()) {
+            if (getTypesList().get(position)==FileBrowserEngine.FOLDER) {
+                holder.fileFolderIcon.setImageResource(R.drawable.icon_folderblue);
+                convertView.setTag(R.string.type, FileBrowserEngine.FOLDER);
 
-        } else if (getTypesList().get(position)==FileBrowserEngine.FILE_AUDIO) {
-            holder.fileFolderIcon.setImageResource(R.drawable.icon_mp3);
-            convertView.setTag(R.string.type, FileBrowserEngine.FILE_AUDIO);
+            } else if (getTypesList().get(position)==FileBrowserEngine.FILE_AUDIO) {
+                holder.fileFolderIcon.setImageResource(R.drawable.icon_mp3);
+                convertView.setTag(R.string.type, FileBrowserEngine.FILE_AUDIO);
 
-        } else if (getTypesList().get(position)==FileBrowserEngine.FILE_PICTURE) {
-            holder.fileFolderIcon.setImageResource(R.drawable.icon_png);
-            convertView.setTag(R.string.type, FileBrowserEngine.FILE_PICTURE);
+            } else if (getTypesList().get(position)==FileBrowserEngine.FILE_PICTURE) {
+                holder.fileFolderIcon.setImageResource(R.drawable.icon_png);
+                convertView.setTag(R.string.type, FileBrowserEngine.FILE_PICTURE);
 
-        } else if (getTypesList().get(position)==FileBrowserEngine.FILE_VIDEO) {
-            holder.fileFolderIcon.setImageResource(R.drawable.icon_avi);
-            convertView.setTag(R.string.type, FileBrowserEngine.FILE_VIDEO);
+            } else if (getTypesList().get(position)==FileBrowserEngine.FILE_VIDEO) {
+                holder.fileFolderIcon.setImageResource(R.drawable.icon_avi);
+                convertView.setTag(R.string.type, FileBrowserEngine.FILE_VIDEO);
 
-        } else {
-            holder.fileFolderIcon.setImageResource(R.drawable.icon_default);
-            convertView.setTag(R.string.type, FileBrowserEngine.FILE_GENERIC);
+            } else {
+                holder.fileFolderIcon.setImageResource(R.drawable.icon_default);
+                convertView.setTag(R.string.type, FileBrowserEngine.FILE_GENERIC);
+
+            }
 
         }
 

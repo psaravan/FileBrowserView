@@ -59,9 +59,10 @@ public class FileBrowserView extends FrameLayout {
     //Flag to show/hide hidden files.
     private boolean mShowHiddenFiles = false;
 
-    //Flags to display individual item attributes in the view.
+    //Flags to display individual item attributes in the default adapter view.
     private boolean mShowOverflowMenus = true;
     private boolean mShowItemSizes = true;
+    private boolean mShowIcons = true;
 
     //Layout type constants.
     public static final int FILE_BROWSER_LIST_LAYOUT = 0;
@@ -207,11 +208,24 @@ public class FileBrowserView extends FrameLayout {
      * If the item is a file, the size of the file will be displayed in the most appropriate
      * units: xxx KB, xxx bytes, xxx MB, etc.
      *
-     * @param show Whether or not the overflow menu should be shown.
+     * @param show Whether or not the item sizes should be shown.
      * @return An instance of this FileBrowserView to allow method chaining.
      */
     public FileBrowserView showItemSizes(boolean show) {
         mShowItemSizes = show;
+        return this;
+    }
+
+    /**
+     * Sets whether or not each file/folder's icon should be displayed next to the name (defaults
+     * to true). Note that this method will have no effect if you use your own adapter via
+     * {@link #setCustomAdapter(AbstractFileBrowserAdapter)}.
+     *
+     * @param show Whether or not the icon should be shown.
+     * @return An instance of this FileBrowserView to allow method chaining.
+     */
+    public FileBrowserView showItemIcons(boolean show) {
+        mShowIcons = show;
         return this;
     }
 
@@ -274,6 +288,16 @@ public class FileBrowserView extends FrameLayout {
      */
     public boolean shouldShowItemSizes() {
         return mShowItemSizes;
+    }
+
+    /**
+     * @return Whether or not each individual item's icon should be displayed in the AbsListView.
+     *         The returned value has no effect if you are using a custom adapter via
+     *         {@link #setCustomAdapter(AbstractFileBrowserAdapter)}.
+     */
+    public boolean shouldShowItemIcons() {
+        return mShowIcons;
+
     }
 
 }

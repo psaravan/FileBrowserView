@@ -5,4 +5,23 @@
     <string name="name">name</string>
     <string name="size">size</string>
     <string name="position">position</string>
+
+    <string name="delete">Delete</string>
+    <string name="copy">Copy</string>
+    <string name="move">Move</string>
+    <string name="rename">Rename</string>
+    <string name="run_in_background">Run in background</string>
+
+    <string name="deleting">Deleting</string>
+    <string name="deleted">deleted.</string>
+    <string name="could_not_be_deleted">could not be deleted.</string>
+
+    <string name="copying">Copying</string>
+    <string name="copied">copied.</string>
+    <string name="could_not_be_copied">could not be copied.</string>
+
+    <string name="moving">Moving</string>
+    <string name="moved">moved.</string>
+    <string name="could_not_be_moved">could not be moved.</string>
+
 </resources>
