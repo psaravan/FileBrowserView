@@ -138,16 +138,17 @@ public View getView(int position, View convertView, ViewGroup parent) {
 
     FoldersViewHolder holder = null;
     if (convertView == null) {
-
         convertView = LayoutInflater.from(mContext).inflate(R.layout.list_view_item, parent, false);
-        
         FoldersViewHolder holder = new FoldersViewHolder();
         holder.title = (TextView) convertView.findViewById(R.id.title);
         
     }
     
-    //Show the name of the item.
-    holder.title.setText(getNamesList().get(position));
+    //Grab the name of the item.
+    String name = getNamesList().get(position);
+    
+    //Display the name to the user using the TextView.
+    holder.title.setText(name);
     
 }
             </code></pre>
