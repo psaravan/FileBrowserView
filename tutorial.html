@@ -132,7 +132,7 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
             You can now use these lists to display data about each individual file/folder in your list/grid item. For example, 
             here's a code snippet that shows you how to implement the <code>getView()</code> method with the lists:
             
-            <code>
+            <pre><code>
               @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
@@ -148,7 +148,9 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
         
         //Show the name of the item.
         holder.title.setText(getNamesList().get(position));
-            </code>
+        
+    }
+            </code></pre>
           </p>
           
           <p>
