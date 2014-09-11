@@ -91,10 +91,31 @@ fileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOU
            You can mix and match most of these options to tailor the library to your needs.
         </p>
         
+        <h2>Customizing the default adapters</h2>
+        
+          <p>The library comes with two different adapters by default (one each for the ListView and GridView representation). 
+            You can customize these default adapters to a limited extent, using the following built-in methods (for complete 
+            control on customizing the adapters, check out the next section):
+            
+            <ul>
+              <li><code>showOverflowMenus()</code>: Allows you to show or hide the overflow menu icons in the default adapters. 
+                The overflow menus allow the user to access functionality such as copy, cut, paste, and delete. If you don't call 
+                this method and pass false, the overflow menus will be shown by default.
+              </li>
+              <li><code>showItemSizes()</code>: Allows you to show or hide the size of each item under its name. For files, the 
+                size is displayed as a formatted string (3 MB, 44 KB, 6 GB, etc.). For folders, the size is displayed as the 
+                number of items within that folder (3 items, 56 items, etc.).
+              </li>
+              <li><code>showItemIcons()</code>: Allows you to show or hide the icon next to each item name. 
+              </li>
+              
+            </ul>
+            
+          </p>
+        
         <h2>Using a custom adapter</h2>
           
-          <p>The library comes with two different adapters by default (one each for the ListView and GridView representation). 
-            If you want to use a different layout for each list/grid item or want to customize how the view elements look, 
+          <p>If you want to use a completely different layout for each list/grid item or want to customize how the view elements look, 
             you'll have to create a custom adapter.
           </p>
           
