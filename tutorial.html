@@ -186,8 +186,8 @@ public View getView(int position, View convertView, ViewGroup parent) {
           
           <p>
             FileBrowserView supports basic filesystem operations such as copying, deleting, moving, and renaming files and folders. 
-            Batch operations are currently not supported but will be added in the near future. All operations will spawn their own 
-            AsyncTask threads and run off the main thread.
+            Batch operations are currently not supported but will be added in the near future. All operations are performed with 
+            AsyncTasks and will run on their own indvidual threads.
           </p>
           
           <h2>Copying</h2>
@@ -201,12 +201,11 @@ public View getView(int position, View convertView, ViewGroup parent) {
             Here's how to execute the copy operation:
             
             <pre><code>
-            
 //Create the source file and destination file.
 File sourceFile = new File("/sdcard/test.db");
 File destFile = new File("/sdcard/CopyFolder/test.db");
             
-//This command will copy /sdcard/test.db to /sdcard/CopyFolder/test.db.
+//This command will copy /sdcard/test.db to /sdcard/CopyFolder/test.db while displaying a progress dialog.
 AsyncCopyTask task = new AsyncCopyTask(context, sourceFile, destFile, true);
 task.execute();
             </code></pre>
