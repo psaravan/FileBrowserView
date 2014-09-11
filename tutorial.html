@@ -190,6 +190,12 @@ public View getView(int position, View convertView, ViewGroup parent) {
             AsyncTasks and will run on their own indvidual threads.
           </p>
           
+          <p>
+            If you are using the default adapters, you won't need to manually call any of the following AsyncTasks. The default overflow 
+            menus already have options for Copy, Move, Rename, and Delete. If you are using your own adapter implementations or want to 
+            access these operations from another location, you'll have to manually call the following AsyncTasks for each operation.
+          </p>
+          
           <h2>Copying</h2>
           
           <p>
