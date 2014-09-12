@@ -43,6 +43,11 @@ public abstract class AbstractFileBrowserAdapter extends ArrayAdapter<String> {
 
     }
 
+    @Override
+    public int getCount() {
+        return getNamesList().size();
+    }
+
     /**
      * Get a View that displays the data at the specified position in the data set. You can either
      * create a View manually or inflate it from an XML layout file. When the View is inflated, the

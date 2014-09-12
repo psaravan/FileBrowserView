@@ -24,4 +24,7 @@
     <string name="moved">moved.</string>
     <string name="could_not_be_moved">could not be moved.</string>
 
+    <string name="unable_to_load_dir">Unable to load folder.</string>
+    <string name="unable_to_open_file">Unable to open file.</string>
+
 </resources>

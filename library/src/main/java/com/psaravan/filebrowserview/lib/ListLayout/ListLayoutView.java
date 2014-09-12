@@ -20,6 +20,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.AdapterData;
 import com.psaravan.filebrowserview.lib.R;
@@ -67,6 +68,11 @@ public class ListLayoutView extends BaseLayoutView {
      * @param directory The File object that points to the directory to load.
      */
     private void showDir(File directory) {
+
+        //Call the interface callback method.
+        if (mNavigationInterface!=null)
+            mNavigationInterface.onNewDirLoaded(directory);
+
         //Grab the directory's data to feed to the list adapter.
         AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(directory);
 
@@ -85,6 +91,9 @@ public class ListLayoutView extends BaseLayoutView {
         //Apply the adapter to the ListView.
         mAbsListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
 
+        //Apply the click listener to the ListView.
+        mAbsListView.setOnItemClickListener(onItemClickListener);
+
     }
 
     /**
@@ -94,6 +103,27 @@ public class ListLayoutView extends BaseLayoutView {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            File file = null;
+            try {
+                String newPath = mFileBrowserView.getFileBrowserAdapter().getPathsList().get(position);
+                file = new File(newPath);
+                showDir(file);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                if (mNavigationInterface!=null)
+                    mNavigationInterface.onFileFolderOpenFailed(file);
+
+                //Display an error toast.
+                if (file!=null && file.isDirectory()) {
+                    Toast.makeText(mContext, R.string.unable_to_load_dir, Toast.LENGTH_SHORT).show();
+                } else if (file!=null && !file.isDirectory()) {
+                    Toast.makeText(mContext, R.string.unable_to_open_file, Toast.LENGTH_SHORT).show();
+                }
+
+            }
 
         }
 

@@ -20,6 +20,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AbsListView;
 
+import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
+
 /**
  * The base layout that is extended by {@link com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView}
  * and {@link com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView}.
@@ -34,10 +36,25 @@ public abstract class BaseLayoutView extends View {
     protected AbsListView mAbsListView;
 
     /**
+     * The interface instance that provides callbacks for filesystem
+     * navigation events.
+     */
+    protected NavigationInterface mNavigationInterface;
+
+    /**
      * Default constructor.
      */
     public BaseLayoutView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+    }
+
+    /**
+     * Sets the navigation interface instance for this view.
+     *
+     * @param navInterface The interface instance to assign to this view.
+     */
+    public void setNavigationInterface(NavigationInterface navInterface) {
+        mNavigationInterface = navInterface;
     }
 
     /**

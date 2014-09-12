@@ -23,6 +23,7 @@ import android.widget.FrameLayout;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
 import com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView;
+import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
 import com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView;
 
 import java.io.File;
@@ -67,6 +68,9 @@ public class FileBrowserView extends FrameLayout {
     //Layout type constants.
     public static final int FILE_BROWSER_LIST_LAYOUT = 0;
     public static final int FILE_BROWSER_GRID_LAYOUT = 1;
+
+    //Navigation Interface.
+    private NavigationInterface mNavigationInterface;
 
     public FileBrowserView(Context context) {
         super(context);
@@ -113,6 +117,9 @@ public class FileBrowserView extends FrameLayout {
             mFileBrowserLayout = new ListLayoutView(mContext, mAttributeSet, this).init();
         else
             mFileBrowserLayout = new GridLayoutView(mContext, mAttributeSet, this).init();
+
+        //Apply the navigation interface.
+        mFileBrowserLayout.setNavigationInterface(mNavigationInterface);
 
     }
 
@@ -226,6 +233,15 @@ public class FileBrowserView extends FrameLayout {
      */
     public FileBrowserView showItemIcons(boolean show) {
         mShowIcons = show;
+        return this;
+    }
+
+    /**
+     * @param navInterface The navigation interface to assign to this view.
+     * @return An instance of this FileBrowserView to allow method chaining
+     */
+    public FileBrowserView setNavigationInterface(NavigationInterface navInterface) {
+        mNavigationInterface = navInterface;
         return this;
     }
 
