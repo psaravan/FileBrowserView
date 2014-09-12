@@ -1,18 +1,4 @@
-What is it?
-==============
-
-FileBrowserView is a powerful drop-in view for file/folder browsing. Using it is as simple as adding the view to your fragment/activity and running your app. Note that the library is currently in active development (alpha) and is not yet fully functional. 
-
-Contributions, feature requests and bug reports are welcome. 
-
-Features (under development)
-=============================
-
-* Customizable interface
-* Built-in support for copy/cut/paste/delete/move operations
-* Can be used in Fragments, Activities, and DialogFragments
-* Tabs to quickly switch between multiple folder locations
-* More features coming soon!
+http://psaravan.github.io/FileBrowserView/
 
 Developed By
 ============
