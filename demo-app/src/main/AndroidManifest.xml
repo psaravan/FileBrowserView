@@ -5,18 +5,30 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name" >
 
         <activity
             android:name=".MainActivity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ListActivity.ListActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeLight" />
+
+        <activity
+            android:name=".GridActivity.GridActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeLight" />
+
     </application>
 
 </manifest>

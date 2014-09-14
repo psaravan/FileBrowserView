@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="mainActivityList" >
+        <item>Simple List</item>
+        <item>Simple Grid</item>
+        <item>Dialog Fragment</item>
+        <item>Tabs</item>
+        <item>Custom Header View</item>
+    </string-array>
+
+</resources>

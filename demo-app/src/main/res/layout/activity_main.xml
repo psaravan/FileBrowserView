@@ -4,10 +4,9 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- View declaration. You can use all the standard view attributes here. -->
-    <com.psaravan.filebrowserview.lib.View.FileBrowserView
-        android:id="@+id/fileBrowserView"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
+    <ListView
+        android:id="@+id/mainActivityListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </RelativeLayout>

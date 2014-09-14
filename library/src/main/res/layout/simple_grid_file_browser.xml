@@ -16,7 +16,11 @@
         android:id="@+id/file_browser_grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="3dp"
         android:layout_below="@+id/file_browser_grid_header"
-        android:drawSelectorOnTop="true" />
+        android:drawSelectorOnTop="true"
+        android:horizontalSpacing="4dp"
+        android:verticalSpacing="4dp"
+        android:numColumns="3" />
 
 </RelativeLayout>

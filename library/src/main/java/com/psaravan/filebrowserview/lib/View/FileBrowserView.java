@@ -282,7 +282,10 @@ public class FileBrowserView extends FrameLayout {
     }
 
     /**
-     * @return The list/grid view that displays the file system.
+     * @return The list/grid view that displays the file system. Note that this method
+     *         does not return the specific subclass (ListView/GridView). You must manually
+     *         cast the returned object as a ListView or a GridView to fully access each
+     *         view's functionality.
      */
     public AbsListView getAbsListView() {
         return mFileBrowserLayout.getAbsListView();

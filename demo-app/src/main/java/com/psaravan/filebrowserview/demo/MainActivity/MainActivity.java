@@ -15,24 +15,33 @@
  */
 package com.psaravan.filebrowserview.demo.MainActivity;
 
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
+import com.psaravan.filebrowserview.demo.DialogFragment.DialogFragment;
+import com.psaravan.filebrowserview.demo.GridActivity.GridActivity;
+import com.psaravan.filebrowserview.demo.ListActivity.ListActivity;
 import com.psaravan.filebrowserview.demo.R;
-import com.psaravan.filebrowserview.lib.View.FileBrowserView;
 
-import java.io.File;
-
+/**
+ * Launcher class that displays all the options and FileBrowserView samples.
+ *
+ * @author Saravan Pantham
+ */
 public class MainActivity extends ActionBarActivity {
 
     //Context.
     private Context mContext;
 
-    //FileBrowserView reference.
-    private FileBrowserView mFileBrowserView;
+    //ListView reference.
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,34 +49,40 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         mContext = this.getApplicationContext();
 
-        //Grab a reference handle on the view, just like you'd do with any other view.
-        mFileBrowserView = (FileBrowserView) findViewById(R.id.fileBrowserView);
+        mListView = (ListView) findViewById(R.id.mainActivityListView);
+        String[] adapterData = mContext.getResources().getStringArray(R.array.mainActivityList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(mContext,
+                                                                android.R.layout.simple_expandable_list_item_1,
+                                                                adapterData);
 
-        //Customize the view.
-        mFileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOUT) //Set the type of view to use.
-                        .setDefaultDirectory(new File("/")) //Set the default directory to show.
-                        .setShowHiddenFiles(true) //Set whether or not you want to show hidden files.
-                        .showItemSizes(true) //Shows the sizes of each item in the list.
-                        .showOverflowMenus(true) //Shows the overflow menus for each item in the list.
-                        .showItemIcons(true) //Shows the icons next to each item name in the list.
-                        .init(); //Loads the view. You MUST call this method, or the view will not be displayed.
+        mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-    }
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = null;
+                switch (position) {
+                    case 0:
+                        intent = new Intent(mContext, ListActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(mContext, GridActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        FragmentManager fragmentManager = getFragmentManager();
+                        DialogFragment fragment = new DialogFragment();
+                        fragment.show(fragmentManager, "dialogFragment");
+                        break;
+                    case 3:
+                        break;
+                }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        });
+
     }
 
 }

@@ -19,7 +19,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
 
 import com.psaravan.filebrowserview.lib.View.FileBrowserView;
 
@@ -198,8 +197,6 @@ public class FileBrowserEngine {
             }
 
         }
-
-        Log.e("DEBUG", ">>>" + namesList);
 
         return new AdapterData(namesList, typesList, pathsList, sizesList);
     }

@@ -17,11 +17,13 @@ package com.psaravan.filebrowserview.lib.ListLayout;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -132,20 +134,50 @@ public class ListLayoutAdapter extends AbstractFileBrowserAdapter {
 
         }
 
-        /* Save the path and position of the file/folder as this row's tag(s).
-         * You MUST do this or the click listener for the list/grid view will not
-         * work.
+        /*
+         * We're gonna need a way to keep track of the file/folder path of each row.
+         * We'll set the path as the row view's tag.
          */
         convertView.setTag(R.string.path, getPathsList().get(position));
-        convertView.setTag(R.string.position, position);
 
         return convertView;
     }
 
     @Override
     public void onOverflowClick(View overflowView) {
-        //TODO auto-generated method stub.
+        //Show a popup menu that displays the filesystem operations.
+        PopupMenu popupMenu = new PopupMenu(mContext, overflowView);
+        popupMenu.inflate(R.menu.filesystem_ops_menu);
+        popupMenu.setOnMenuItemClickListener(menuItemClickListener);
+        popupMenu.show();
     }
+
+    /**
+     * Use this interface to implement your filesystem operations logic.
+     */
+    private PopupMenu.OnMenuItemClickListener menuItemClickListener =
+            new PopupMenu.OnMenuItemClickListener() {
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                int id = item.getItemId();
+                if (id==R.id.copy) {
+                    //TODO Implement your copy functionality here.
+                } else if (id==R.id.paste) {
+                    //TODO Implement your paste functionality here.
+                } else if (id==R.id.move) {
+                    //TODO Implement your move functionality here.
+                } else if (id==R.id.rename) {
+                    //TODO Implement your rename functionality here.
+                } else if (id==R.id.delete) {
+                    //TODO Implement your delete functionality here.
+                }
+
+                return false;
+            }
+
+    };
 
     private View.OnClickListener overflowClickListener = new View.OnClickListener() {
 

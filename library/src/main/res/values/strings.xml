@@ -10,6 +10,7 @@
     <string name="copy">Copy</string>
     <string name="move">Move</string>
     <string name="rename">Rename</string>
+    <string name="paste">Paste</string>
     <string name="run_in_background">Run in background</string>
 
     <string name="deleting">Deleting</string>
