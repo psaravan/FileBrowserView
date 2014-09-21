@@ -67,7 +67,8 @@ public class GridLayoutView extends BaseLayoutView {
      *
      * @param directory The File object that points to the directory to load.
      */
-    private void showDir(File directory) {
+    @Override
+    protected void showDir(File directory) {
 
         //Call the interface callback method.
         if (mNavigationInterface!=null)

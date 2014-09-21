@@ -72,6 +72,9 @@ public class FileBrowserView extends FrameLayout {
     //Navigation Interface.
     private NavigationInterface mNavigationInterface;
 
+    //Whether or not tabbed browsing is enabled.
+    private boolean mTabbedBrowsingEnabled = false;
+
     public FileBrowserView(Context context) {
         super(context);
         mContext = context;
@@ -112,11 +115,20 @@ public class FileBrowserView extends FrameLayout {
         //Initialize the file browser engine for this view instance.
         mFileBrowserEngine = new FileBrowserEngine(mContext, this);
 
-        //Inflate the view's layout based on the selected layout.
-        if (getFileBrowserLayoutType()==FILE_BROWSER_LIST_LAYOUT)
-            mFileBrowserLayout = new ListLayoutView(mContext, mAttributeSet, this).init();
-        else
-            mFileBrowserLayout = new GridLayoutView(mContext, mAttributeSet, this).init();
+        /*
+         * If tabbed browsing is enabled, an instance of TabContainer will
+         * become the direct child of this view. If not, we can directly
+         * inflate the List/Grid layout views.
+         */
+        if (isTabbedBrowsingEnabled()) {
+            mFileBrowserLayout = new TabsContainer(mContext, mAttributeSet, this).init();
+        } else {
+            //Inflate the view's layout based on the selected layout.
+            if (getFileBrowserLayoutType()==FILE_BROWSER_LIST_LAYOUT)
+                mFileBrowserLayout = new ListLayoutView(mContext, mAttributeSet, this).init();
+            else
+                mFileBrowserLayout = new GridLayoutView(mContext, mAttributeSet, this).init();
+        }
 
         //Apply the navigation interface.
         mFileBrowserLayout.setNavigationInterface(mNavigationInterface);
@@ -246,6 +258,26 @@ public class FileBrowserView extends FrameLayout {
     }
 
     /**
+     * Sets whether or not tabbed browsing should be enabled. If you pass true,
+     * a TabHost will be placed above the FileBrowserView and will allow the user
+     * to open new tabs to browse the filesystem (à la Google Chrome tab browsing).
+     *
+     * @param enable Whether or not tabbed browsing should be enabled.
+     * @return An instance of this FileBrowserView to allow method chaining.
+     */
+    public FileBrowserView enableTabbedBrowsing(boolean enable) {
+        mTabbedBrowsingEnabled = enable;
+        return this;
+    }
+
+    /**
+     * @return The AttributeSet object associated with this view instance.
+     */
+    public AttributeSet getAttributeSet() {
+        return mAttributeSet;
+    }
+
+    /**
      * @return The current layout type for this FileBrowserView instance.
      */
     public int getFileBrowserLayoutType() {
@@ -317,6 +349,13 @@ public class FileBrowserView extends FrameLayout {
     public boolean shouldShowItemIcons() {
         return mShowIcons;
 
+    }
+
+    /**
+     * @return Whether tabbed browsing is enabled or not for this FileBrowserView instance.
+     */
+    public boolean isTabbedBrowsingEnabled() {
+        return mTabbedBrowsingEnabled;
     }
 
 }

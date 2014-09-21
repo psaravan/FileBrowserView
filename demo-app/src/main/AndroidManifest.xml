@@ -29,6 +29,11 @@
             android:label="@string/app_name"
             android:theme="@style/AppThemeLight" />
 
+        <activity
+            android:name=".TabbedBrowsingActivity.TabbedListActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppThemeLight" />
+
     </application>
 
 </manifest>

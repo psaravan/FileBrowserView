@@ -51,6 +51,8 @@ public class ListLayoutView extends BaseLayoutView {
 
     /**
      * Inflates the layout and sets the list's adapter.
+     *
+     * @return A reference to this view's instance.
      */
     public ListLayoutView init() {
         //Inflate the view from the XML resource.
@@ -67,7 +69,8 @@ public class ListLayoutView extends BaseLayoutView {
      *
      * @param directory The File object that points to the directory to load.
      */
-    private void showDir(File directory) {
+    @Override
+    protected void showDir(File directory) {
 
         //Call the interface callback method.
         if (mNavigationInterface!=null)

@@ -29,6 +29,7 @@ import com.psaravan.filebrowserview.demo.DialogFragment.DialogFragment;
 import com.psaravan.filebrowserview.demo.GridActivity.GridActivity;
 import com.psaravan.filebrowserview.demo.ListActivity.ListActivity;
 import com.psaravan.filebrowserview.demo.R;
+import com.psaravan.filebrowserview.demo.TabbedBrowsingActivity.TabbedListActivity;
 
 /**
  * Launcher class that displays all the options and FileBrowserView samples.
@@ -76,6 +77,8 @@ public class MainActivity extends ActionBarActivity {
                         fragment.show(fragmentManager, "dialogFragment");
                         break;
                     case 3:
+                        intent = new Intent(mContext, TabbedListActivity.class);
+                        startActivity(intent);
                         break;
                 }
 

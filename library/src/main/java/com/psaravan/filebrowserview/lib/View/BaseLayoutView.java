@@ -22,6 +22,8 @@ import android.widget.AbsListView;
 
 import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
 
+import java.io.File;
+
 /**
  * The base layout that is extended by {@link com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView}
  * and {@link com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView}.
@@ -29,6 +31,11 @@ import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
  * @author Saravan Pantham
  */
 public abstract class BaseLayoutView extends View {
+
+    /**
+     * Context intstance.
+     */
+    protected Context mContext;
 
     /**
      * The ListView/GridView that displays the file system.
@@ -46,7 +53,16 @@ public abstract class BaseLayoutView extends View {
      */
     public BaseLayoutView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        mContext = context;
     }
+
+    /**
+     * Override this method to implement your logic for loading a directory structure of the
+     * specified dir and to set your AbsListView's adapter.
+     *
+     * @param directory The File object that points to the directory to load.
+     */
+    protected abstract void showDir(File directory);
 
     /**
      * Sets the navigation interface instance for this view.
