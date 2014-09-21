@@ -5,6 +5,8 @@ FileBrowserView is a powerful Android view library for file/folder browsing. Che
 
 http://psaravan.github.io/FileBrowserView/
 
+<img src="http://psaravan.github.io/FileBrowserView/images/FileBrowserViewFramed2.png" height="480" width="283">
+
 Developed By
 ============
 
