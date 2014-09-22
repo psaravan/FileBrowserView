@@ -18,6 +18,7 @@ package com.psaravan.filebrowserview.lib.GridLayout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
@@ -46,16 +47,19 @@ public class GridLayoutView extends BaseLayoutView {
         super(context, attributeSet);
         mContext = context;
         mFileBrowserView = fileBrowserView;
-        init();
+
     }
 
     /**
      * Inflates the layout and sets the grid's adapter.
+     *
+     * @param viewGroup The ViewGroup to inflate the layout into.
+     * @return A reference to this view's instance.
      */
-    public GridLayoutView init() {
+    public GridLayoutView init(ViewGroup viewGroup) {
         //Inflate the view from the XML resource.
-        View.inflate(mContext, R.layout.simple_grid_file_browser, mFileBrowserView);
-        mAbsListView = (GridView) mFileBrowserView.findViewById(R.id.file_browser_grid_view);
+        View.inflate(mContext, R.layout.simple_grid_file_browser, viewGroup);
+        mAbsListView = (GridView) viewGroup.findViewById(R.id.file_browser_grid_view);
 
         //Display the default dir.
         showDir(mFileBrowserView.getDefaultDirectory());

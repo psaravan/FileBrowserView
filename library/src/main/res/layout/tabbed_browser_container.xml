@@ -13,15 +13,18 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
             <RelativeLayout
+                android:id="@+id/tabs_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content" >
 
                 <HorizontalScrollView
+                    android:id="@+id/tab_widget_horiz_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/new_tab_button"
                     android:fillViewport="true"
                     android:scrollbars="none" >
 
@@ -34,22 +37,27 @@
 
                 </HorizontalScrollView>
 
-                <RelativeLayout
+                <ImageView
+                    android:id="@+id/new_tab_button"
                     android:layout_width="50dp"
-                    android:layout_height="wrap_content">
-
-                </RelativeLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignBottom="@+id/tab_widget_horiz_scroll_view"
+                    android:layout_alignTop="@+id/tab_widget_horiz_scroll_view"
+                    android:scaleType="centerInside"
+                    android:src="@+drawable/ic_action_new" />
 
             </RelativeLayout>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent" >
+                android:layout_height="wrap_content" >
 
             </FrameLayout>
 
         </LinearLayout>
+
     </TabHost>
 
 </RelativeLayout>

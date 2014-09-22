@@ -121,13 +121,13 @@ public class FileBrowserView extends FrameLayout {
          * inflate the List/Grid layout views.
          */
         if (isTabbedBrowsingEnabled()) {
-            mFileBrowserLayout = new TabsContainer(mContext, mAttributeSet, this).init();
+            mFileBrowserLayout = new TabsContainer(mContext, mAttributeSet, this).init(this);
         } else {
             //Inflate the view's layout based on the selected layout.
             if (getFileBrowserLayoutType()==FILE_BROWSER_LIST_LAYOUT)
-                mFileBrowserLayout = new ListLayoutView(mContext, mAttributeSet, this).init();
+                mFileBrowserLayout = new ListLayoutView(mContext, mAttributeSet, this).init(this);
             else
-                mFileBrowserLayout = new GridLayoutView(mContext, mAttributeSet, this).init();
+                mFileBrowserLayout = new GridLayoutView(mContext, mAttributeSet, this).init(this);
         }
 
         //Apply the navigation interface.

@@ -18,6 +18,7 @@ package com.psaravan.filebrowserview.lib.ListLayout;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -46,18 +47,19 @@ public class ListLayoutView extends BaseLayoutView {
         super(context, attributeSet);
         mContext = context;
         mFileBrowserView = fileBrowserView;
-        init();
+
     }
 
     /**
      * Inflates the layout and sets the list's adapter.
      *
+     * @param viewGroup The ViewGroup to inflate the layout into.
      * @return A reference to this view's instance.
      */
-    public ListLayoutView init() {
+    public ListLayoutView init(ViewGroup viewGroup) {
         //Inflate the view from the XML resource.
-        View.inflate(mContext, R.layout.simple_list_file_browser, mFileBrowserView);
-        mAbsListView = (ListView) mFileBrowserView.findViewById(R.id.file_browser_list_view);
+        View.inflate(mContext, R.layout.simple_list_file_browser, viewGroup);
+        mAbsListView = (ListView) viewGroup.findViewById(R.id.file_browser_list_view);
 
         //Display the default dir.
         showDir(mFileBrowserView.getDefaultDirectory());

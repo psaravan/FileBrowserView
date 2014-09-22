@@ -18,7 +18,9 @@ package com.psaravan.filebrowserview.lib.View;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 
@@ -44,6 +46,7 @@ public class TabsContainer extends View {
     private FileBrowserView mFileBrowserView;
     protected TabHost mTabHost;
     protected TabWidget mTabWidget;
+    protected ImageView mNewTabButton;
     protected FrameLayout mTabContentLayout;
 
     public TabsContainer(Context context, FileBrowserView fileBrowserView) {
@@ -64,42 +67,26 @@ public class TabsContainer extends View {
      * Initializes this view instance and opens the default tab/directory structure. Also
      * attaches a "New Tab" button to the TabWidget.
      *
+     * @param viewGroup The ViewGroup to inflate the layout into.
      * @return The {@link com.psaravan.filebrowserview.lib.View.BaseLayoutView} instance that
      *         is inflated inside the default tab.
      *
      */
-    public BaseLayoutView init() {
+    public BaseLayoutView init(ViewGroup viewGroup) {
 
         //Initialize the tabbed container.
-        View view = View.inflate(mContext, R.layout.tabbed_browser_container, mFileBrowserView);
+        View view = View.inflate(mContext, R.layout.tabbed_browser_container, viewGroup);
         mTabHost = (TabHost) view.findViewById(R.id.tabHost);
         mTabWidget = (TabWidget) view.findViewById(android.R.id.tabs);
+        mNewTabButton = (ImageView) view.findViewById(R.id.new_tab_button);
         mTabContentLayout = (FrameLayout) view.findViewById(android.R.id.tabcontent);
+        mNewTabButton.setOnClickListener(newTabClickListener);
 
         //Initialize the TabHost.
         mTabHost.setup();
 
-        //Add a "New Tab" button.
-        addNewTabButton();
-
         //Open the default tab.
         return openNewBrowserTab(mFileBrowserView.getDefaultDirectory());
-    }
-
-    /**
-     * Creates a new default tab that will allow the user to open other new
-     * tabs. This tab will not have any view attached to it.
-     */
-    protected void addNewTabButton() {
-        if (mTabHost==null)
-            return;
-
-        //Add the new tab button.
-        TabHost.TabSpec newTabSpec = mTabHost.newTabSpec("new_tab_button");
-        newTabSpec.setIndicator("", mContext.getResources().getDrawable(R.drawable.ic_action_new));
-        newTabSpec.setContent(R.id.dummy);
-        mTabHost.addTab(newTabSpec);
-
     }
 
     /**
@@ -109,20 +96,19 @@ public class TabsContainer extends View {
      */
     protected BaseLayoutView openNewBrowserTab(File directory) {
 
-
         //Inflate the view's layout based on the selected layout.
         BaseLayoutView contentView = null;
         if (mFileBrowserView.getFileBrowserLayoutType()==FileBrowserView.FILE_BROWSER_LIST_LAYOUT)
-            contentView = new ListLayoutView(mContext, mFileBrowserView.getAttributeSet(), mFileBrowserView).init();
+            contentView = new ListLayoutView(mContext, mFileBrowserView.getAttributeSet(), mFileBrowserView).init(mTabContentLayout);
         else
-            contentView = new GridLayoutView(mContext, mFileBrowserView.getAttributeSet(), mFileBrowserView).init();
+            contentView = new GridLayoutView(mContext, mFileBrowserView.getAttributeSet(), mFileBrowserView).init(mTabContentLayout);
 
         //Add a new layout to the TabHost.
-        contentView.setId(mTabWidget.getTabCount() + 1);
+        contentView.setId(mTabHost.getTabWidget().getTabCount() + 1);
         mTabContentLayout.addView(contentView);
 
         //Add the new tab to the TabHost.
-        String directoryName = directory.getName();
+        String directoryName = directory.getAbsoluteFile().getName();
         TabHost.TabSpec newTabSpec = mTabHost.newTabSpec(directoryName);
         newTabSpec.setIndicator(directoryName);
         newTabSpec.setContent(mTabHost.getTabWidget().getTabCount() + 1);
@@ -130,5 +116,17 @@ public class TabsContainer extends View {
 
         return contentView;
     }
+
+    /**
+     * Click listener for the "New Tab" button.
+     */
+    private OnClickListener newTabClickListener = new OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            openNewBrowserTab(mFileBrowserView.getDefaultDirectory());
+        }
+
+    };
 
 }
