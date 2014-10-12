@@ -44,6 +44,9 @@ public class FileBrowserEngine {
     //Parent FileBrowserView instance.
     private FileBrowserView mFileBrowserView;
 
+    //Current dir instance.
+    private File mCurrentDir;
+
     //File type constants.
     public static final int FILE_AUDIO = 0;
     public static final int FILE_VIDEO = 1;
@@ -69,6 +72,8 @@ public class FileBrowserEngine {
      * @return An {@link AdapterData} object that holds the data of the specified directory.
      */
     public AdapterData loadDir(File directory) {
+
+        mCurrentDir = directory;
 
         //Init the directory's data arrays.
         ArrayList<String> namesList = new ArrayList<String>();
@@ -281,6 +286,10 @@ public class FileBrowserEngine {
         final double result = divider > 1 ? (double) value / (double) divider : (double) value;
 
         return new DecimalFormat("#,##0.#").format(result) + " " + unit;
+    }
+
+    public File getCurrentDir() {
+        return mCurrentDir;
     }
 
 }

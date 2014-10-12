@@ -306,6 +306,14 @@ public class FileBrowserView extends FrameLayout {
         return mFileBrowserEngine;
     }
 
+    public File getCurrentDir() {
+        return mFileBrowserEngine.getCurrentDir();
+    }
+
+    public File getParentDir() {
+        return getCurrentDir().getParentFile();
+    }
+
     /**
      * @return The adapter that backs the list/grid view for FileBrowserView instance.
      */

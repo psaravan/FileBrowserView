@@ -90,4 +90,19 @@ public class ListActivity extends Activity {
 
     };
 
+    @Override
+    public void onBackPressed() {
+        if (mFileBrowserView!=null) {
+            File parentDir = mFileBrowserView.getParentDir();
+
+            if (parentDir!=null) {
+                mFileBrowserView.getFileBrowserEngine().loadDir(parentDir);
+            } else {
+                super.onBackPressed();
+            }
+
+        }
+
+    }
+
 }
