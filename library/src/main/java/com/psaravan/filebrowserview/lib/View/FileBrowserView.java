@@ -306,10 +306,17 @@ public class FileBrowserView extends FrameLayout {
         return mFileBrowserEngine;
     }
 
+    /**
+     * @return The File object that represents the current directory.
+     */
     public File getCurrentDir() {
         return mFileBrowserEngine.getCurrentDir();
     }
 
+    /**
+     * @return The File object that represents the current directory's parent dir.
+     *         Returns null if the current directory doesn't have a parent dir.
+     */
     public File getParentDir() {
         return getCurrentDir().getParentFile();
     }
