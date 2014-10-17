@@ -27,6 +27,7 @@ import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
 import com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Base implementation class for FileBrowserView. Each FileBrowserView object is essentially a
@@ -268,6 +269,48 @@ public class FileBrowserView extends FrameLayout {
     public FileBrowserView enableTabbedBrowsing(boolean enable) {
         mTabbedBrowsingEnabled = enable;
         return this;
+    }
+
+    /**
+     * Restricts the view into displaying ONLY files that match any of the passed file extensions.
+     *
+     * @param fileExtensions An ArrayList that contains string representations of the
+     *                       extensions of the files to display in the browser. The file
+     *                       extension must be formatted like this: ".xxx" where xxx is
+     *                       the file extension. If the file extension is invalid, it will
+     *                       be skipped.
+     * @param showFolders Sets whether folders should be displayed in the view or not. Useful if you
+     *                    only want to display files of a certain type and nothing else.
+     */
+    public void showFileExtensions(ArrayList<String> fileExtensions, boolean showFolders) {
+        if (fileExtensions==null)
+            return;
+
+        for (int i=0; i < fileExtensions.size(); i++) {
+
+        }
+
+    }
+
+    /**
+     * Restricts the view into displaying ONLY files that match any of the passed file extensions.
+     *
+     * @param fileExtensions An ArrayList that contains string representations of the
+     *                       extensions of the files to hide in the browser. The file
+     *                       extension must be formatted like this: ".xxx" where xxx is
+     *                       the file extension. If the file extension is invalid, it will
+     *                       be skipped.
+     * @param showFolders Sets whether folders should be displayed in the view or not. Useful if you
+     *                    want to hide files of a certain type AND folders.
+     */
+    public void hideFileExtensions(ArrayList<String> fileExtensions, boolean showFolders) {
+        if (fileExtensions==null)
+            return;
+
+        for (int i=0; i < fileExtensions.size(); i++) {
+
+        }
+
     }
 
     /**
