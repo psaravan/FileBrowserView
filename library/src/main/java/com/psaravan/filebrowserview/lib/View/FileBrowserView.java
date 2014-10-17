@@ -22,11 +22,13 @@ import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileBrowserEngine;
+import com.psaravan.filebrowserview.lib.FileBrowserEngine.FileExtensionFilter;
 import com.psaravan.filebrowserview.lib.GridLayout.GridLayoutView;
 import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
 import com.psaravan.filebrowserview.lib.ListLayout.ListLayoutView;
 
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Base implementation class for FileBrowserView. Each FileBrowserView object is essentially a
@@ -74,6 +76,10 @@ public class FileBrowserView extends FrameLayout {
 
     //Whether or not tabbed browsing is enabled.
     private boolean mTabbedBrowsingEnabled = false;
+
+    //FileExtensionFilter instance and whether or not to show other dirs in the current dir.
+    private FileExtensionFilter mFileExtensionFilter;
+    private boolean mShouldShowFolders = true;
 
     public FileBrowserView(Context context) {
         super(context);
@@ -271,6 +277,36 @@ public class FileBrowserView extends FrameLayout {
     }
 
     /**
+     * Prevents the browser from displaying files that match any of the file extensions that are
+     * passed in via the param fileExtensions. Calling this method is optional; not calling it or
+     * passing in an empty list will cause all files to be displayed regardless of their extensions.
+     *
+     * @param fileExtensions An ArrayList that contains string representations of the
+     *                       extensions of the files to hide in the browser. The file
+     *                       extension must be formatted like this: ".xxx", where xxx is
+     *                       the file extension.
+     *
+     * @param showFolders Sets whether folders should be displayed in the view or not. Useful for
+     *                    displaying a static view of the current folder with no way to navigate
+     *                    away from it.
+     *
+     * @return An instance of this FileBrowserView to allow method chaining.
+     */
+    public FileBrowserView excludeFileTypes(ArrayList<String> fileExtensions, boolean showFolders) {
+        if (fileExtensions==null)
+            return this;
+
+        mFileExtensionFilter = new FileExtensionFilter();
+        mShouldShowFolders = showFolders;
+
+        for (int i=0; i < fileExtensions.size(); i++) {
+            mFileExtensionFilter.addExtension(fileExtensions.get(i));
+        }
+
+        return this;
+    }
+
+    /**
      * @return The AttributeSet object associated with this view instance.
      */
     public AttributeSet getAttributeSet() {
@@ -371,6 +407,20 @@ public class FileBrowserView extends FrameLayout {
      */
     public boolean isTabbedBrowsingEnabled() {
         return mTabbedBrowsingEnabled;
+    }
+
+    /**
+     * @return The FileExtensionFilter extension that is currently in use for this FileBrowserView.
+     */
+    public FileExtensionFilter getFileExtensionFilter() {
+        return mFileExtensionFilter;
+    }
+
+    /**
+     * @return Whether or not folders should be shown in the browser.
+     */
+    public boolean shouldShowFolders() {
+        return mShouldShowFolders;
     }
 
 }

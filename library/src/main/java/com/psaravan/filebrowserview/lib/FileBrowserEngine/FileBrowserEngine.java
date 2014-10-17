@@ -93,7 +93,7 @@ public class FileBrowserEngine {
                 File file = files[i];
                 if ((!file.isHidden() || mFileBrowserView.shouldShowHiddenFiles()) && file.canRead()) {
 
-                    if (file.isDirectory()) {
+                    if (file.isDirectory() && mFileBrowserView.shouldShowFolders()) {
 
                         /*
 						 * Starting with Android 4.2, /storage/emulated/legacy/...
@@ -128,6 +128,14 @@ public class FileBrowserEngine {
 
                         try {
                             String path = file.getCanonicalPath();
+
+                            //Check if the file ends with an excluded extension.
+                            String[] splits = path.split(".");
+                            if (mFileBrowserView.getFileExtensionFilter()
+                                                .getFilterMap()
+                                                .containsKey("." + splits[splits.length-1]))
+                                continue;
+
                             pathsList.add(path);
                         } catch (IOException e) {
                             continue;
