@@ -18,6 +18,7 @@ package com.psaravan.filebrowserview.demo.GridActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 
 import com.psaravan.filebrowserview.demo.R;
 import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
@@ -49,7 +50,7 @@ public class GridActivity extends Activity {
 
         //Customize the view.
         mFileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_GRID_LAYOUT) //Set the type of view to use.
-                        .setDefaultDirectory(new File("/")) //Set the default directory to show.
+                        .setDefaultDirectory(Environment.getExternalStorageDirectory()) //Set the default directory to show.
                         .setShowHiddenFiles(true) //Set whether or not you want to show hidden files.
                         .showItemSizes(true) //Shows the sizes of each item in the list.
                         .showOverflowMenus(true) //Shows the overflow menus for each item in the list.
@@ -70,7 +71,7 @@ public class GridActivity extends Activity {
         @Override
         public void onNewDirLoaded(File dirFile) {
             //Update the action bar title.
-            getActionBar().setTitle(dirFile.getAbsolutePath());
+            setTitle(dirFile.getAbsolutePath());
         }
 
         @Override
@@ -92,17 +93,20 @@ public class GridActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (mFileBrowserView!=null) {
+        if (mFileBrowserView != null) {
             File parentDir = mFileBrowserView.getParentDir();
 
-            if (parentDir!=null) {
-                mFileBrowserView.getFileBrowserEngine().loadDir(parentDir);
+            if (parentDir != null) {
+                try {
+                    mFileBrowserView.getFileBrowserEngine().loadDir(parentDir);
+                    mFileBrowserView.setDefaultDirectory(parentDir);
+                    mFileBrowserView.init();
+                } catch (Exception ex) {
+                    super.onBackPressed();
+                }
             } else {
                 super.onBackPressed();
             }
-
         }
-
     }
-
 }

@@ -45,7 +45,7 @@
                     android:layout_alignBottom="@+id/tab_widget_horiz_scroll_view"
                     android:layout_alignTop="@+id/tab_widget_horiz_scroll_view"
                     android:scaleType="centerInside"
-                    android:src="@+drawable/ic_action_new" />
+                    android:src="@drawable/ic_action_new" />
 
             </RelativeLayout>
 

@@ -62,43 +62,49 @@ public class ListLayoutView extends BaseLayoutView {
         mAbsListView = (ListView) viewGroup.findViewById(R.id.file_browser_list_view);
 
         //Display the default dir.
-        showDir(mFileBrowserView.getDefaultDirectory());
+        openFileSystemItem(mFileBrowserView.getDefaultDirectory());
         return this;
     }
 
     /**
      * Loads the directory structure of the specified dir and sets the ListView's adapter.
      *
-     * @param directory The File object that points to the directory to load.
+     * @param fileSystemItem The File object that points to the directory to load.
      */
     @Override
-    protected void showDir(File directory) {
+    protected void openFileSystemItem(File fileSystemItem) {
 
-        //Call the interface callback method.
-        if (mNavigationInterface!=null)
-            mNavigationInterface.onNewDirLoaded(directory);
+        if(fileSystemItem.isDirectory()) {
+            //Call the interface callback method.
+            if (mNavigationInterface != null)
+                mNavigationInterface.onNewDirLoaded(fileSystemItem);
 
-        //Grab the directory's data to feed to the list adapter.
-        AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(directory);
+            //Grab the directory's data to feed to the list adapter.
+            AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(fileSystemItem);
 
-        //Check if the user wants to use a custom adapter.
-        if (mFileBrowserView.getFileBrowserAdapter()!=null) {
-            //The user called setFileBrowserAdapter() and is using a custom adapter.
-            mFileBrowserView.getFileBrowserAdapter().setAdapterData(adapterData);
+            //Check if the user wants to use a custom adapter.
+            if (mFileBrowserView.getFileBrowserAdapter() != null) {
+                //The user called setFileBrowserAdapter() and is using a custom adapter.
+                mFileBrowserView.getFileBrowserAdapter().setAdapterData(adapterData);
 
-        } else {
-            //Nope, no custom adapter, so fall back to the default adapter.
-            ListLayoutAdapter adapter = new ListLayoutAdapter(mContext, mFileBrowserView, adapterData);
-            mFileBrowserView.setCustomAdapter(adapter);
+            } else {
+                //Nope, no custom adapter, so fall back to the default adapter.
+                ListLayoutAdapter adapter = new ListLayoutAdapter(mContext, mFileBrowserView, adapterData);
+                mFileBrowserView.setCustomAdapter(adapter);
 
+            }
+
+            //Apply the adapter to the ListView.
+            mAbsListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
+
+            //Apply the click listener to the ListView.
+            mAbsListView.setOnItemClickListener(onItemClickListener);
         }
-
-        //Apply the adapter to the ListView.
-        mAbsListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
-
-        //Apply the click listener to the ListView.
-        mAbsListView.setOnItemClickListener(onItemClickListener);
-
+        else
+        {
+            if (mNavigationInterface != null)
+                mNavigationInterface.onFileOpened(fileSystemItem);
+        }
     }
 
     /**
@@ -113,7 +119,7 @@ public class ListLayoutView extends BaseLayoutView {
             try {
                 String newPath = mFileBrowserView.getFileBrowserAdapter().getPathsList().get(position);
                 file = new File(newPath);
-                showDir(file);
+                openFileSystemItem(file);
 
             } catch (Exception e) {
                 e.printStackTrace();

@@ -18,6 +18,8 @@ package com.psaravan.filebrowserview.demo.ListActivity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 
 import com.psaravan.filebrowserview.demo.R;
 import com.psaravan.filebrowserview.lib.Interfaces.NavigationInterface;
@@ -49,7 +51,7 @@ public class ListActivity extends Activity {
 
         //Customize the view.
         mFileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOUT) //Set the type of view to use.
-                        .setDefaultDirectory(new File("/")) //Set the default directory to show.
+                        .setDefaultDirectory(Environment.getExternalStorageDirectory()) //Set the default directory to show.
                         .setShowHiddenFiles(true) //Set whether or not you want to show hidden files.
                         .showItemSizes(true) //Shows the sizes of each item in the list.
                         .showOverflowMenus(true) //Shows the overflow menus for each item in the list.
@@ -70,22 +72,22 @@ public class ListActivity extends Activity {
         @Override
         public void onNewDirLoaded(File dirFile) {
             //Update the action bar title.
-            getActionBar().setTitle(dirFile.getAbsolutePath());
+            setTitle(dirFile.getAbsolutePath());
         }
 
         @Override
         public void onFileOpened(File file) {
-
+            Log.d("ListActivity", "onFileOpened");
         }
 
         @Override
         public void onParentDirLoaded(File dirFile) {
-
+            Log.d("ListActivity", "onParentDirLoaded");
         }
 
         @Override
         public void onFileFolderOpenFailed(File file) {
-
+            Log.d("ListActivity", "onFileFolderOpenFailed");
         }
 
     };
@@ -96,7 +98,15 @@ public class ListActivity extends Activity {
             File parentDir = mFileBrowserView.getParentDir();
 
             if (parentDir!=null) {
-                mFileBrowserView.getFileBrowserEngine().loadDir(parentDir);
+                try {
+                    mFileBrowserView.getFileBrowserEngine().loadDir(parentDir);
+                    mFileBrowserView.setDefaultDirectory(parentDir);
+                    mFileBrowserView.init();
+                }
+                catch(Exception ex)
+                {
+                    super.onBackPressed();
+                }
             } else {
                 super.onBackPressed();
             }

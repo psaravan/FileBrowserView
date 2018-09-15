@@ -19,7 +19,7 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -36,7 +36,7 @@ import com.psaravan.filebrowserview.demo.TabbedBrowsingActivity.TabbedListActivi
  *
  * @author Saravan Pantham
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     //Context.
     private Context mContext;

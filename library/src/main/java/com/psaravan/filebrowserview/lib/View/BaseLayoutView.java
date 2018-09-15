@@ -62,7 +62,7 @@ public abstract class BaseLayoutView extends View {
      *
      * @param directory The File object that points to the directory to load.
      */
-    protected abstract void showDir(File directory);
+    protected abstract void openFileSystemItem(File directory);
 
     /**
      * Sets the navigation interface instance for this view.
