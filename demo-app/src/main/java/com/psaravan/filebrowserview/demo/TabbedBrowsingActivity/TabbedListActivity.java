@@ -72,7 +72,7 @@ public class TabbedListActivity extends Activity {
         @Override
         public void onNewDirLoaded(File dirFile) {
             //Update the action bar title.
-            getActionBar().setTitle(dirFile.getAbsolutePath());
+            setTitle(dirFile.getAbsolutePath());
         }
 
         @Override

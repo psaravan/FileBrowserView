@@ -129,12 +129,14 @@ public class FileBrowserEngine {
                         try {
                             String path = file.getCanonicalPath();
 
-                            //Check if the file ends with an excluded extension.
-                            String[] splits = path.split(".");
-                            if (mFileBrowserView.getFileExtensionFilter()
-                                                .getFilterMap()
-                                                .containsKey("." + splits[splits.length-1]))
-                                continue;
+                            if(mFileBrowserView.getFileExtensionFilter() != null) {
+                                //Check if the file ends with an excluded extension.
+                                String[] splits = path.split(".");
+                                if (mFileBrowserView.getFileExtensionFilter()
+                                        .getFilterMap()
+                                        .containsKey("." + splits[splits.length - 1]))
+                                    continue;
+                            }
 
                             pathsList.add(path);
                         } catch (IOException e) {

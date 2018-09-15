@@ -62,7 +62,7 @@ public class GridLayoutView extends BaseLayoutView {
         mAbsListView = (GridView) viewGroup.findViewById(R.id.file_browser_grid_view);
 
         //Display the default dir.
-        showDir(mFileBrowserView.getDefaultDirectory());
+        openFileSystemItem(mFileBrowserView.getDefaultDirectory());
         return this;
     }
 
@@ -72,33 +72,40 @@ public class GridLayoutView extends BaseLayoutView {
      * @param directory The File object that points to the directory to load.
      */
     @Override
-    protected void showDir(File directory) {
+    protected void openFileSystemItem(File directory) {
 
-        //Call the interface callback method.
-        if (mNavigationInterface!=null)
-            mNavigationInterface.onNewDirLoaded(directory);
+        if(directory.isDirectory()) {
+            //Call the interface callback method.
+            if (mNavigationInterface != null)
+                mNavigationInterface.onNewDirLoaded(directory);
 
-        //Grab the directory's data to feed to the grid adapter.
-        AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(directory);
+            //Grab the directory's data to feed to the grid adapter.
+            AdapterData adapterData = mFileBrowserView.getFileBrowserEngine().loadDir(directory);
 
-        //Check if the user wants to use a custom adapter.
-        if (mFileBrowserView.getFileBrowserAdapter()!=null) {
-            //The user called setFileBrowserAdapter() and is using a custom adapter.
-            mFileBrowserView.getFileBrowserAdapter().setAdapterData(adapterData);
+            //Check if the user wants to use a custom adapter.
+            if (mFileBrowserView.getFileBrowserAdapter() != null) {
+                //The user called setFileBrowserAdapter() and is using a custom adapter.
+                mFileBrowserView.getFileBrowserAdapter().setAdapterData(adapterData);
 
-        } else {
-            //Nope, no custom adapter, so fall back to the default adapter.
-            GridLayoutAdapter adapter = new GridLayoutAdapter(mContext, mFileBrowserView, adapterData);
-            mFileBrowserView.setCustomAdapter(adapter);
+            } else {
+                //Nope, no custom adapter, so fall back to the default adapter.
+                GridLayoutAdapter adapter = new GridLayoutAdapter(mContext, mFileBrowserView, adapterData);
+                mFileBrowserView.setCustomAdapter(adapter);
+
+            }
+
+            //Apply the adapter to the GridView.
+            mAbsListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
+
+            //Apply the click listener to the GridView.
+            mAbsListView.setOnItemClickListener(onItemClickListener);
+        }
+        else
+        {
+            if (mNavigationInterface != null)
+                mNavigationInterface.onFileOpened(directory);
 
         }
-
-        //Apply the adapter to the GridView.
-        mAbsListView.setAdapter(mFileBrowserView.getFileBrowserAdapter());
-
-        //Apply the click listener to the GridView.
-        mAbsListView.setOnItemClickListener(onItemClickListener);
-
     }
 
     /**
@@ -113,7 +120,7 @@ public class GridLayoutView extends BaseLayoutView {
             try {
                 String newPath = mFileBrowserView.getFileBrowserAdapter().getPathsList().get(position);
                 file = new File(newPath);
-                showDir(file);
+                openFileSystemItem(file);
 
             } catch (Exception e) {
                 e.printStackTrace();

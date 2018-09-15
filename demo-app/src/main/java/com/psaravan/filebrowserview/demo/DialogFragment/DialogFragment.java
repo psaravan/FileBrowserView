@@ -17,6 +17,7 @@ package com.psaravan.filebrowserview.demo.DialogFragment;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class DialogFragment extends android.app.DialogFragment {
 
         //Customize the view.
         mFileBrowserView.setFileBrowserLayoutType(FileBrowserView.FILE_BROWSER_LIST_LAYOUT) //Set the type of view to use.
-                        .setDefaultDirectory(new File("/")) //Set the default directory to show.
+                        .setDefaultDirectory(Environment.getExternalStorageDirectory()) //Set the default directory to show.
                         .setShowHiddenFiles(true) //Set whether or not you want to show hidden files.
                         .showItemSizes(true) //Shows the sizes of each item in the list.
                         .showOverflowMenus(true) //Shows the overflow menus for each item in the list.
